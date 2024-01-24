@@ -1,0 +1,95 @@
+﻿@{
+
+    Layout = "/Views/Shared/_Layout_main.cshtml";
+}
+
+<section class="relative w-full ">
+    <img src="https://placeholder.com/1200x300/png"
+         alt="Slider Image"
+         width="1200"
+         height="337"
+         class="object-cover w-full rounded"
+         style=" object-fit: cover;" />
+
+
+    <!-- 페이징 버튼 -->
+    <div class="absolute bottom-4 right-4 flex space-x-2">
+        <!-- 이전 버튼 -->
+        <a href="" class="text-white">  이전</a>
+
+        <!-- 다음 버튼 -->
+        <a href="" class="text-white"> 다음</a>
+    </div>
+</section>
+
+<section>
+    <h2 class="text-2xl font-bold my-4 px-10 ">Featured Books</h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-10">
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+            <div class="p-4">
+                <img src="https://placeholder.com/200x300/png"
+                     alt="Book Cover"
+                     width="200"
+                     height="300"
+                     class="w-1/4 object-cover w-full rounded-lg" />
+                <h3 class="text-lg font-semibold mt-2">General Book</h3>
+                <p class="text-gray-500">$15.99</p>
+            </div>
+        </div>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+            <div class="p-4">
+                <img src="https://placeholder.com/200x300/png"
+                     alt="Book Cover"
+                     width="200"
+                     height="300"
+                     class="w-1/4 object-cover w-full rounded-lg" />
+                <h3 class="text-lg font-semibold mt-2">Seasonal Book</h3>
+                <p class="text-gray-500">$20.99</p>
+            </div>
+        </div>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+            <div class="p-4">
+                <img src="https://placeholder.com/200x300/png"
+                     alt="Book Cover"
+                     width="200"
+                     height="300"
+                     class="w-1/4 object-cover w-full rounded-lg" />
+                <h3 class="text-lg font-semibold mt-2">Dragon Book</h3>
+                <p class="text-gray-500">$25.99</p>
+            </div>
+        </div>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+            <div class="p-4">
+                <img src="https://placeholder.com/200x300/png"
+                     alt="Book Cover"
+                     width="200"
+                     height="300"
+                     class="w-1/4 object-cover w-full rounded-lg" />
+                <h3 class="text-lg font-semibold mt-2">Dad's Book</h3>
+                <p class="text-gray-500">$18.99</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="mt-8">
+    <h2 class="text-2xl font-bold my-4 px-10 ">Featured Books</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-10">
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold">New Book Release</h3>
+                <p class="text-gray-500">We're excited to announce the release of our latest book!</p>
+            </div>
+        </div>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm mt-4" data-v0-t="card">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold">Store Hours Update</h3>
+                <p class="text-gray-500">Our store hours have been updated for the holiday season.</p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
