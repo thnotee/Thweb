@@ -4,12 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Thweb.Mall</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Thweb.Mall.styles.css" asp-append-version="true" />
 </head>
 <body class="flex items-center justify-between flex-col">
-    <header class="w-full bg-gray-800">
+    <header class="w-full bg-gray-800 px-4">
         <div class="flex w-full">
             <div class="w-1/4 flex items-center">
                 <h1 class="text-lg font-bold text-white">Thweb Bookstore</h1>
@@ -31,14 +30,34 @@
                 </nav>
             </div>
             <div class="w-1/4 flex justify-end items-center">
-                <a asp-area="Identity" asp-page="/Account/Register" class="text-white">로그인</a>
+                <a asp-area="Identity" asp-page="/Account/Register" class="text-white mx-4">회원가입</a>
                 <a asp-area="Identity" asp-page="/Account/Login" class="text-white">로그인</a>
             </div>
         </div>
     </header>
-    
 
-    <div class="h-[100px] bg-red-800 w-full">테스트</div>
+
+    <section class="relative w-full ">
+        <div>
+            <img src="https://placeholder.com/1200x300/png"
+                 alt="Slider Image"
+                 width="1200"
+                 height="337"
+                 class="object-cover w-full rounded"
+                 style=" object-fit: cover;" />
+
+        </div>
+        
+
+        <!-- 페이징 버튼 -->
+        <div class="absolute bottom-4 right-4 flex space-x-2">
+            <!-- 이전 버튼 -->
+            <a href="" class="text-white">  이전</a>
+
+            <!-- 다음 버튼 -->
+            <a href="" class="text-white"> 다음</a>
+        </div>
+    </section>
    
     <div class="flex items-center justify-center flex-col">
      
@@ -54,7 +73,6 @@
         </div>
     </footer>
     
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
