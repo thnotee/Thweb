@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Thweb.Mall</title>
     <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Thweb.Mall.styles.css" asp-append-version="true" />
 </head>
 <body class="flex items-center justify-between flex-col">
@@ -30,7 +31,7 @@
                 </nav>
             </div>
             <div class="w-1/4 flex justify-end items-center">
-                <a asp-area="Identity" asp-page="/Account/Register" class="text-white mx-4">회원가입</a>
+                <a asp-area="Identity" asp-page="/Account/Register" class="text-white mx-4 h-20">회원가입</a>
                 <a asp-area="Identity" asp-page="/Account/Login" class="text-white">로그인</a>
             </div>
         </div>
@@ -38,6 +39,7 @@
 
 
     <section class="relative w-full ">
+        
         <div>
             <img src="https://placeholder.com/1200x300/png"
                  alt="Slider Image"
@@ -60,7 +62,9 @@
     </section>
    
     <div class="flex items-center justify-center flex-col">
-     
+        <button class="th-bl-btn my-2 h-5">나를 클릭하세요</button>
+        <button class="th-wh-btn my-2">나를 클릭하세요</button>
+        <input class="th-input" value="dd" />
 
             @RenderBody()
     </div>
@@ -74,7 +78,7 @@
     </footer>
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

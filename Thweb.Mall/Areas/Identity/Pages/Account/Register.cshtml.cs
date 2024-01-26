@@ -98,6 +98,11 @@ namespace Thweb.Mall.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public string UserName { get; set; }
+            public string PostCode { get; set; }
+            public string PostName { get; set; }
+            public string PostDetail { get; set; }
         }
 
 
@@ -179,3 +184,5 @@ namespace Thweb.Mall.Areas.Identity.Pages.Account
         }
     }
 }
+
+
