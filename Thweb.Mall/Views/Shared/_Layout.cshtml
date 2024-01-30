@@ -12,11 +12,11 @@
 <body class="">
     <header class="w-full bg-gray-800">
         <div class="flex w-full">
-            <div class="w-1/4 flex items-center">
+            <div class="w-2/4 md:w-1/4 flex items-center mx-4">
                 <h1 class="text-lg font-bold text-white">Thweb Bookstore</h1>
             </div>
-            <div class="w-2/4">
-                <nav class="flex items-center gap-4 flex justify-around p-3">
+            <div class="w-2/4 hidden md:block">
+                <nav class=" flex items-center gap-4 flex justify-around p-3 ">
                     <a class="hover:underline text-white" href="#">
                         Home
                     </a>
@@ -31,13 +31,47 @@
                     </a>
                 </nav>
             </div>
-            <div class="w-1/4 flex justify-end items-center">
-                <a asp-area="Identity" asp-page="/Account/Register" class="text-white">로그인</a>
+            <div class="hidden md:flex w-1/4 justify-end items-center mx-4">
+                <a asp-area="Identity" asp-page="/Account/Register" class="text-white mx-4">회원가입</a>
                 <a asp-area="Identity" asp-page="/Account/Login" class="text-white">로그인</a>
             </div>
+
+            <div class="flex md:hidden w-2/4 justify-end items-end">
+                <svg onclick="m_menu_open()"
+                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </div>
+        </div>
+
+        <div id="m_menu" class="transform -translate-x-full transition-transform duration-500 ease-in-out fixed w-full  h-full bg-gray-800 overflow-auto flex-1 p-6 z-50  ">
+            <ul class="space-y-4 px-1">
+                <li class="bg-wh-800">
+                    <a class="hover:underline text-white" href="#">
+                        Home
+                    </a>
+                </li>
+
+                <li>
+                    <a class="hover:underline text-white" href="#">
+                        Shop
+                    </a>
+                </li>
+
+                <li>
+                    <a class="hover:underline text-white" href="#">
+                        About
+                    </a>
+                </li>
+
+                <li>
+                    <a class="hover:underline text-white" href="#">
+                        Contact
+                    </a>
+                </li>
+            </ul>
         </div>
     </header>
-    
 
    
     <div class="flex items-center justify-center flex-col">

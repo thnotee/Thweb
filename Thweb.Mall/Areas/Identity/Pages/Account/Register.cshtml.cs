@@ -99,6 +99,7 @@ namespace Thweb.Mall.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Required(ErrorMessage ="회원명을 입력해주세요.")]
+            [RegularExpression("^[a-zA-Z0-9]*$", ErrorMessage = "영문과 숫자만 입력 가능합니다.")]
             public string UserName { get; set; }
             [Required(ErrorMessage = "우편번호를 입력해주세요.")]
             public string PostCode { get; set; }
@@ -128,11 +129,6 @@ namespace Thweb.Mall.Areas.Identity.Pages.Account
                 user.PostCode = Input.PostCode;
                 user.PostName = Input.PostName;
                 user.PostDetail = Input.PostDetail;
-                //user.PasswordHash = Input.PasswordHash;
-                var allowedSpecialCharacters = new[] { "이태환" };
-
-      
-
 
                 //await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 // await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
