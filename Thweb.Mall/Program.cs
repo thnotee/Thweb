@@ -18,7 +18,6 @@ builder.Services.AddIdentity<ThwebUser, IdentityRole>()
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.User.RequireUniqueEmail = true;
-    //options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz";
     options.Password.RequireDigit = true;  // 숫자를 필수로 요구
     options.Password.RequireLowercase = false;  // 소문자 사용을 요구하지 않음
     options.Password.RequireUppercase = false;  // 대문자 사용을 요구하지 않음

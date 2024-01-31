@@ -5,54 +5,52 @@
     ViewData["Title"] = "Log in";
 }
 
+<form asp-page="/Account/Login" method="post">
+    <div class="mx-auto min-w-[350px] space-y-6 py-4">
+        <div class="space-y-2 text-center">
+            <h1 class="text-3xl font-bold ">로그인</h1>
+            <p class="text-gray-500 dark:text-gray-400">계정 정보를 입력하여 로그인하세요.</p>
+        </div>
+        <div>
+            <div class="space-y-4">
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                           asp-for="Input.Email">
+                        이메일
+                    </label>
+                    <input class="th-input"
+                           asp-for="Input.Email"
+                           placeholder="example@example.com"
+                           required=""
+                           type="email" />
+                    <span asp-validation-for="Input.Email" class="text-red-500 text-sm p-4"></span>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                           asp-for="Input.Password">
+                        비밀번호
+                    </label>
+                    <input class="th-input"
+                           asp-for="Input.Password"
+                           required=""
+                           type="password" />
+                    <span asp-validation-for="Input.Password" class="text-red-500 text-sm p-4"></span>
+                </div>
+                <button class="th-wh-btn w-full"
+                        type="submit">
+                    로그인
+                </button>
+            </div>
+            <div data-orientation="horizontal" role="none" class="shrink-0 bg-gray-400 h-[1px] w-full my-8"></div>
+            <div class="space-y-4">
+                <button class="th-wh-btn w-full">
+                    구글로 로그인
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
 
-<div class="mx-auto max-w-[350px] space-y-6 py-4">
-    <div class="space-y-2 text-center">
-        <h1 class="text-3xl font-bold ">로그인</h1>
-        <p class="text-gray-500 dark:text-gray-400">계정 정보를 입력하여 로그인하세요.</p>
-    </div>
-    <div>
-        <div class="space-y-4">
-            <div class="space-y-2">
-                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                       for="email">
-                    이메일
-                </label>
-                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                       id="email"
-                       placeholder="example@example.com"
-                       required=""
-                       type="email" />
-            </div>
-            <div class="space-y-2">
-                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                       for="password">
-                    비밀번호
-                </label>
-                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                       id="password"
-                       required=""
-                       type="password" />
-            </div>
-            <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
-                    type="submit">
-                로그인
-            </button>
-        </div>
-        <div data-orientation="horizontal" role="none" class="shrink-0 bg-gray-100 h-[1px] w-full my-8"></div>
-        <div class="space-y-4">
-            <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full">
-                구글로 로그인
-            </button>
-            <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full">
-                페이스북으로 로그인
-            </button>
-            <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full">
-                애플로 로그인
-            </button>
-        </div>
-    </div>
-</div>
 @*
 <div class="row">
     <div class="col-md-4">

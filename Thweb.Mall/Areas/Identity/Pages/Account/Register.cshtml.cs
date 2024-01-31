@@ -98,9 +98,8 @@ namespace Thweb.Mall.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "비밀번호가 일치하지 않습니다.")]
             public string ConfirmPassword { get; set; }
 
-            [Required(ErrorMessage ="회원명을 입력해주세요.")]
-            [RegularExpression("^[a-zA-Z0-9]*$", ErrorMessage = "영문과 숫자만 입력 가능합니다.")]
-            public string UserName { get; set; }
+            [Required(ErrorMessage ="닉네임을 입력해주세요.")]
+            public string Nickname { get; set; }
             [Required(ErrorMessage = "우편번호를 입력해주세요.")]
             public string PostCode { get; set; }
             [Required(ErrorMessage = "주소를 입력해주세요.")]
@@ -125,13 +124,13 @@ namespace Thweb.Mall.Areas.Identity.Pages.Account
                 ThwebUser user = CreateUser();
 
                 user.Email = Input.Email;
-                user.UserName = Input.UserName;
+                user.Nickname = Input.Nickname;
                 user.PostCode = Input.PostCode;
                 user.PostName = Input.PostName;
                 user.PostDetail = Input.PostDetail;
 
-                //await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                // await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                ///await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -162,6 +161,9 @@ namespace Thweb.Mall.Areas.Identity.Pages.Account
                 }
                 foreach (var error in result.Errors)
                 {
+                    if (error.Code == "DuplicateEmail") {
+                        error.Description = "중복된 이메일 입니다.";
+                    }
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Thweb.Data.DbContext;
 
@@ -11,9 +12,11 @@ using Thweb.Data.DbContext;
 namespace Thweb.Data.Migrations
 {
     [DbContext(typeof(ThwebDbContext))]
-    partial class ThwebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240131144036_modiyfy_user_table")]
+    partial class modiyfy_user_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

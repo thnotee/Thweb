@@ -25,15 +25,36 @@
             @apply cursor-not-allowed opacity-50;
         }
 }
+/*********************테이블 공통 css***********************/
+/* 기본 행 스타일 */
+.th_table {
+    width: 100%;
+}
 
-/*
-
-    .th-input:focus-visible {
-        @apply outline-none ring-2 ring-ring ring-offset-2;
+/* 짝수 행에 대한 배경색 설정 */
+    .th_table > tbody > tr:nth-child(even) {
+        background-color: #fff;
+        /* 짝수 행 배경색 */
     }
 
-    .th-input:disabled {
-        @apply cursor-not-allowed opacity-50;
+/* 홀수 행에 대한 배경색 설정 */
+    .th_table > tbody > tr:nth-child(odd) {
+        background-color: #e2e8f0;
+        /* 홀수 행 배경색 */
     }
 
-    */
+.th_table > thead > tr > th {
+    background-color: #fff;
+    height: 50px;
+    font-size: large;
+}
+
+.th_table > tbody > tr > td {
+    padding : 1rem;
+    font-size: large;
+    height: 50px
+}
+
+.th_table > tbody > tr:hover {
+    background-color: #269be9;
+}

@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Identity;
 namespace Thweb.Model.Model
 {
     public class ThwebUser : IdentityUser
-    {
+
+    { 
         [Required]
-        public string? PostCode { get; set; }
+        public string Nickname { get; set; }
         [Required]
-        public string? PostName { get; set; }
+        public string PostCode { get; set; }
         [Required]
-        public string? PostDetail { get; set; }
+        public string PostName { get; set; }
+        [Required]
+        public string PostDetail { get; set; }
     }
 }
