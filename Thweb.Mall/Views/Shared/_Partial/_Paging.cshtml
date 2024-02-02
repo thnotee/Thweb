@@ -1,0 +1,63 @@
+﻿@using Thweb.Util.Pager
+
+@model Tuple<Pager, PagerOptions>
+@{
+    var pagedData = Model.Item1;
+    var options = Model.Item2;
+}
+
+@functions
+{
+    public string PrintPagerBtn(bool condition, string text, string path, int pageNo, string addQueryString)
+    {
+        if (condition)
+        {
+            var url = path + "?pageNo=" + pageNo
+                + (!string.IsNullOrWhiteSpace(addQueryString) ? "&" + addQueryString : "");
+
+            return "<a href='" + url + "'>" + text + "</a>";
+        }
+        else
+        {
+            return "<a href='javascript:void(0);'>" + text + "</a>";
+        }
+    }
+}
+<div class="page_btn">
+    <ul>
+        <li>
+            @if (options.displayPrevNextPaginationSize)
+            {
+                @Html.Raw(PrintPagerBtn(pagedData.prevPaginationSize, "<img src='/images/list/page_start.svg' alt='이전 10페이지' />", options.path, pagedData.startNavi - 1, options.addQueryString))
+            }
+            @if (options.displayPrevNextButton)
+            {
+                @Html.Raw(PrintPagerBtn(pagedData.perv, "<img src='/images/list/page_left.svg' alt='이전' />", options.path, pagedData.pageNumber - 1, options.addQueryString))
+            }
+        </li>
+        <li class="num">
+            @for (var i = pagedData.startNavi; i <= pagedData.endNavi; i++)
+            {
+                if (pagedData.pageNumber == i)
+                {
+                    <a href='@options.path?pageNo=@i&@options.addQueryString' class='page_no'>@i</a>
+                }
+                else
+                {
+                    <a href='@options.path?pageNo=@i&@options.addQueryString'>@i</a>
+                }
+            }
+        </li>
+        <li>
+            @if (options.displayPrevNextButton)
+            {
+                @Html.Raw(PrintPagerBtn(pagedData.next, " <img src='/images/list/page_right.svg' alt='다음' />", options.path, pagedData.pageNumber + 1, options.addQueryString))
+            }
+
+            @if (options.displayPrevNextPaginationSize)
+            {
+                @Html.Raw(PrintPagerBtn(pagedData.nextPaginationSize, "<img src='/images/list/page_end.svg' alt='다음 10페이지' />", options.path, pagedData.endNavi + 1, options.addQueryString))
+            }
+        </li>
+    </ul>
+</div>

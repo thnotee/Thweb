@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Thweb.Model\Thweb.Model.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <None Include="Areas\Admin\Views\User\Index.cshtml" />
+    <None Include="Areas\Admin\Views\_ViewImports.cshtml" />
+    <None Include="Areas\Admin\Views\_ViewStart.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.1" />
@@ -22,10 +29,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Thweb.Data\Thweb.Data.csproj" />
     <ProjectReference Include="..\Thweb.Model\Thweb.Model.csproj" />
+    <ProjectReference Include="..\Thweb.Util\Thweb.Util.csproj" />
   </ItemGroup>
 
-
+	<!--
 	<Target Name="BuildCSS" Condition="'$(Configuration)' == 'Debug'">
 		<Exec Command="npx tailwindcss -i ./wwwroot/css/tailwind/input_tailwind.css -o ./wwwroot/css/app.css" />
 	</Target>
+	-->
 </Project>
