@@ -1,8 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
+using System.Linq.Expressions;
+using System.Xml;
 using Thweb.Data.Repository;
 using Thweb.Data.Repository.IRepository;
 using Thweb.Model.Model;
+using Thweb.Model.Model.Pager;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Thweb.Mall.Areas.Admin.Controllers
 {
@@ -21,11 +27,12 @@ namespace Thweb.Mall.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1 , string searchString = "")
         {
-
-            var userList = await _unitOfWork.ThwebUser.GetPagedListAsync(1,10);
-            //List<ThwebUser> userList = _unitOfWork.ThwebUser.GetAll(includeProperties: "Company").ToList();
+            Expression<Func<ThwebUser, DateTime>> orderByEx = x => x.RegDate;
+            PagedList<ThwebUser> userList = await _unitOfWork.ThwebUser.GetPagedListAsync<DateTime>(page, 10,null,orderBy: orderByEx);
+            userList.pagerOptions.Path = "/Admin/User/Index";
+            userList.pagerOptions.AddQueryString = $"searchString={searchString}";
             return View(userList);
         }
 

@@ -5,32 +5,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thweb.Model.Model
+namespace Thweb.Model.Model.Pager
 {
     public class PagedList<T> : IReadOnlyList<T>
     {
         private readonly IList<T> subset;
-        public PagedList(IEnumerable<T> items, int count, int pageNumber, int pageSize)
+        public PagedList(IEnumerable<T> items, int count, int pageNumber, int pageSize, int pagenationSize = 10)
         {
-            PageNumber = pageNumber;
-            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             subset = items as IList<T> ?? new List<T>(items);
+            this.pagerOptions = new PagerOptions(count, pageNumber, pageSize, pagenationSize);
         }
 
-        public int PageNumber { get; }
+        /// <summary>
+        /// 페이지 옵션
+        /// </summary>
+        public PagerOptions pagerOptions { get; }
 
-        public int TotalPages { get; }
-
-        public bool IsFirstPage => PageNumber == 1;
-
-        public bool IsLastPage => PageNumber == TotalPages;
-
+        /// <summary>
+        // 열거자 구현
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public int Count => subset.Count;
+
 
         public T this[int index] => subset[index];
 
         public IEnumerator<T> GetEnumerator() => subset.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => subset.GetEnumerator();
+    
+
+
     }
 }

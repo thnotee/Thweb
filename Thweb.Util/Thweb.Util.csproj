@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Thweb.Model\Thweb.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pager\" />
+  </ItemGroup>
+
 </Project>

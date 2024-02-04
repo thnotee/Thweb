@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Thweb.Model.Model;
 
 namespace Thweb.Data.Repository.IRepository
 {
-   public interface IUnitOfWork
+    public interface ICategoryRepository : IRepository<Category>
     {
-        IThwebUserRepository ThwebUser { get; }
-
-        ICategoryRepository Category { get; }
-
-        void Save();
+        public void Update(Category category);
     }
-
 }
-

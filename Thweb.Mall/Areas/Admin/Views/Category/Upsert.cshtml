@@ -1,0 +1,40 @@
+﻿@model Category
+@{
+
+}
+<div class="container w-full p-10">
+    <form method="post" asp-action="Upsert">
+
+        @if (Model == null)
+        {
+            <p class="text-center text-2xl">카테고리 추가</p>
+        }
+        else
+        {
+            <p class="text-center text-2xl">카테고리 수정</p>
+        }
+
+    <div class="my-4">
+            <input type="hidden" asp-for="@Model.Id" />
+            <input asp-for="@Model.Name"
+                   class="th-input"
+                   placeholder="카테고리명을 입력해주세요." />
+            <span asp-validation-for="@Model.Name" class="text-red-500 text-sm p-4"></span>
+
+    </div>
+  
+        @if (Model == null)
+        {
+            <button class="th-bl-btn">추가</button>
+        }
+        else
+        {
+            <button class="th-bl-btn">수정</button>
+        }
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("~/Views/Shared/_Partial/_SweetAlert.cshtml")
+    
+}

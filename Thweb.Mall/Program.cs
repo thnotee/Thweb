@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Thweb.Data.DbContext;
+using Thweb.Data.Repository;
+using Thweb.Data.Repository.IRepository;
 using Thweb.Mall.Areas.Identity.Pages.Account.Manage;
 using Thweb.Model.Model;
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +29,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     //options.SignIn.RequireConfirmedEmail = true;
     //options => options.SignIn.RequireConfirmedAccount = true
 });
+
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddDistributedMemoryCache();
 
 var app = builder.Build();

@@ -2,15 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer components {
     .th-wh-btn {
-        @apply h-10 px-6 font-semibold rounded-md border border-slate-200 text-slate-900;
+        @apply h-10 px-6 font-semibold rounded-md border border-slate-200 text-slate-900 inline-block m-0;
     }
 
     .th-bl-btn {
-        @apply h-10 px-6 font-semibold rounded-md bg-black text-white;
+        @apply h-10 px-6 font-semibold rounded-md bg-black text-white inline-block m-0 ;
+    }
+
+    .th-red-btn {
+        @apply h-10 px-6 font-semibold rounded-md bg-red-500 text-white inline-block m-0;
     }
 
     .th-input {
@@ -25,85 +27,4 @@
             @apply cursor-not-allowed opacity-50;
         }
 }
-/*********************테이블 공통 css***********************/
-/* 기본 행 스타일 */
-.th_table {
-    width: 100%;
-}
 
-/* 짝수 행에 대한 배경색 설정 */
-    .th_table > tbody > tr:nth-child(even) {
-        background-color: #fff;
-        /* 짝수 행 배경색 */
-    }
-
-/* 홀수 행에 대한 배경색 설정 */
-    .th_table > tbody > tr:nth-child(odd) {
-        background-color: #e2e8f0;
-        /* 홀수 행 배경색 */
-    }
-
-.th_table > thead > tr > th {
-    background-color: #fff;
-    height: 50px;
-    font-size: large;
-}
-
-.th_table > tbody > tr > td {
-    padding : 1rem;
-    font-size: large;
-    height: 50px
-}
-
-.th_table > tbody > tr:hover {
-    background-color: #269be9;
-}
-
-
-/* 페이지 버튼 **************************************************************************/
-
-    .page_btn ul {
-        display: flex;
-        justify-content: center;
-    }
-
-        .page_btn ul li {
-            display: flex;
-        }
-
-            .page_btn ul li a {
-                width: 35px;
-                height: 35px;
-                line-height: 35px;
-                text-align: center;
-                border: 1px solid #e5e5e5;
-                background-color: #f2f2f2;
-                margin: 0 3px;
-            }
-
-                .page_btn ul li a img {
-                    width: 100%;
-                }
-
-            .page_btn ul li.num a {
-                width: 35px;
-                height: 35px;
-                line-height: 34px;
-                font-size: 14px;
-                font-family: "Pretendard-Bold";
-                background-color: #fff;
-                margin: 0 3px;
-            }
-
-                .page_btn ul li.num a:hover {
-                    background-color: #000;
-                    border: 1px solid #000;
-                    transition: 0.3s;
-                    color: #fff;
-                }
-
-            .page_btn ul li.num .page_no {
-                background-color: #000;
-                border: 1px solid #000;
-                color: #fff;
-            }

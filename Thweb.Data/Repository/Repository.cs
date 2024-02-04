@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Thweb.Data.DbContext;
 using Thweb.Data.Repository.IRepository;
-using Thweb.Model.Model;
+using Thweb.Model.Model.Pager;
 
 namespace Thweb.Data.Repository
 {
@@ -43,10 +43,13 @@ namespace Thweb.Data.Repository
         }
 
 
-        public async Task<PagedList<T>> GetPagedListAsync(
+        public async Task<PagedList<T>> GetPagedListAsync<U>(
             int page, int pageSize
             , Expression<Func<T, bool>>? filter = null
-            , string? includeProperties = null)
+            , Expression<Func<T, U>>? orderBy = null
+            , bool descending = false
+            , string? includeProperties = null
+            )
         {
 
             IQueryable<T> query = dbSet;
@@ -54,6 +57,18 @@ namespace Thweb.Data.Repository
             if (filter != null)
             {
                 query = query.Where(filter);
+            }
+
+            if (orderBy != null)
+            {
+                if (descending)
+                {
+                    query = query.OrderByDescending(orderBy);
+                }
+                else
+                {
+                    query = query.OrderBy(orderBy);
+                }
             }
 
             if (!string.IsNullOrEmpty(includeProperties))

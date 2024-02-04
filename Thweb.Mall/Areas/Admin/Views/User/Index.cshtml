@@ -1,140 +1,43 @@
-﻿@{
+﻿@model PagedList<ThwebUser>;
+@{
     Layout = "/Views/Shared/_Layout_admin.cshtml";
 }
 
-<div class="container w-full">
-    <h2>User 홈</h2>
+
+<div class="container w-full p-10">
+    
     <table id="" class="th_table w-full border border-gray-500">
         <thead>
             <tr>
-                <th class="">Salary</th>
-                <th class="">Salary</th>
-                <th class="">Salary</th>
-                <th class="">Salary</th>
-                <th class="">Salary</th>
-                <th class="">Salary</th>
+                <th class="">이메일</th>
+                <th class="">닉네임</th>
+                <th class="">가입일</th>
+                <th class="">정지</th>
             </tr>
         </thead>
         <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="sorting_1" tabindex="0">@item.Email</td>
+                    <td>@item.Nickname</td>
+                    <td>@item.RegDate.ToString("yyyy-MM-dd")</td>
+                    <td>정지시키기 추가예정</td>
+                </tr>
 
-            <tr>
-                <td class="sorting_1" tabindex="0">Charde Marshall</td>
-                <td>Regional Director</td>
-                <td>San Francisco</td>
-                <td>36</td>
-                <td>2008/10/16</td>
-                <td>$470,600</td>
-            </tr>
-            <tr>
-                <td tabindex="0" class="sorting_1">Colleen Hurst</td>
-                <td>Javascript Developer</td>
-                <td>San Francisco</td>
-                <td>39</td>
-                <td>2009/09/15</td>
-                <td>$205,500</td>
-            </tr>
-            <tr>
-                <td class="sorting_1" tabindex="0">Dai Rios</td>
-                <td>Personnel Lead</td>
-                <td>Edinburgh</td>
-                <td>35</td>
-                <td>2012/09/26</td>
-                <td>$217,500</td>
-            </tr>
-            <tr>
-                <td class="sorting_1" tabindex="0">Donna Snider</td>
-                <td>Customer Support</td>
-                <td>New York</td>
-                <td>27</td>
-                <td>2011/01/25</td>
-                <td>$112,000</td>
-            </tr>
-            <tr>
-                <td class="sorting_1" tabindex="0">Doris Wilder</td>
-                <td>Sales Assistant</td>
-                <td>Sidney</td>
-                <td>23</td>
-                <td>2010/09/20</td>
-                <td>$85,600</td>
-            </tr>
-            <tr>
-                <td class="sorting_1" tabindex="0">Finn Camacho</td>
-                <td>Support Engineer</td>
-                <td>San Francisco</td>
-                <td>47</td>
-                <td>2009/07/07</td>
-                <td>$87,500</td>
-            </tr>
-            <tr>
-                <td class="sorting_1" tabindex="0">Fiona Green</td>
-                <td>Chief Operating Officer (COO)</td>
-                <td>San Francisco</td>
-                <td>48</td>
-                <td>2010/03/11</td>
-                <td>$850,000</td>
-            </tr>
-            <tr>
-                <td tabindex="0" class="sorting_1">Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>$170,750</td>
-            </tr>
-            <tr>
-                <td class="sorting_1" tabindex="0">Gavin Cortez</td>
-                <td>Team Leader</td>
-                <td>San Francisco</td>
-                <td>22</td>
-                <td>2008/10/26</td>
-                <td>$235,500</td>
-            </tr>
-            <tr>
-                <td class="sorting_1 " tabindex="0">Gavin Joyce</td>
-                <td>Developer</td>
-                <td>Edinburgh</td>
-                <td>42</td>
-                <td>2010/12/22</td>
-                <td>$92,575</td>
-            </tr>
+            }
         </tbody>
-
 
     </table>
 
     <div class="flex justify-between mt-4">
 
-        <div>
-            <input class="th-input w-full px-4" />
+        <div class="flex w-full">
+            <input class="th-input w-2/4 px-4" />
+            <button class="th-bl-btn mx-2 w-1/4 ">검색</button>
         </div>
         <div>
-            <div class="page_btn">
-                <ul>
-                    <li>
-                        <a href="">
-                            <img src="/images/list/page_start.svg" alt="이전 10페이지" />
-                        </a>
-                        <a href="">
-                            <img src="/images/list/page_left.svg" alt="이전" />
-                        </a>
-                    </li>
-                    <li class="num">
-                        <a href="" class="page_no">1</a>
-                        <a href="">2</a>
-                        <a href="">3</a>
-                        <a href="">4</a>
-                        <a href="">5</a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <img src="/images/list/page_right.svg" alt="다음" />
-                        </a>
-                        <a href="">
-                            <img src="/images/list/page_end.svg" alt="다음 10페이지" />
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            @await Html.PartialAsync("~/Views/Shared/_Partial/_Paging.cshtml", Model.pagerOptions)
         </div>
 
     </div>

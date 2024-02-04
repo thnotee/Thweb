@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Category>
+@{
+    Layout = "/Views/Shared/_Layout_admin.cshtml";
+}
+카테고리 컨트롤러
+
+<form id="removeForm" asp-action="Remove">
+    <input type="hidden" name="categoryId" id="categoryId" />
+<div class="container w-full p-10">
+
+    <table id="" class="th_table w-full border border-gray-500">
+        <thead>
+            <tr>
+                <th class="">ID</th>
+                <th class="">카테고리명</th>
+                <th class="">수정 or 삭제</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                        <td class="flex items-center">
+                            <a asp-controller="Category" asp-action="Upsert" asp-route-id="@item.Id" class="th-bl-btn flex items-center h-8 mx-4">수정</a>
+                            <button type="button" onclick="Remove(@item.Id)" class="th-red-btn h-8">삭제</button>  
+                        </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+        <div class="flex justify-start mt-4">
+            
+            <a asp-controller="Category" asp-action="Upsert" class="th-bl-btn flex items-center  h-10">추가</a>
+    </div>
+        
+
+        
+</div>
+
+</form>
+
+@section Scripts {
+    @await Html.PartialAsync("~/Views/Shared/_Partial/_SweetAlert.cshtml")
+    <script>
+
+        function Remove(id){
+            $("#categoryId").val(id)
+            $("#removeForm").submit();
+        }
+    </script>
+}
