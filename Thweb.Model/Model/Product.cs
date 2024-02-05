@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.ComponentModel.DataAnnotations.Schema;
 namespace Thweb.Model.Model
 {
     public class Product
@@ -23,12 +20,6 @@ namespace Thweb.Model.Model
         public string Description { get; set; }
 
         /// <summary>
-        /// 글쓴이
-        /// </summary>
-        [Required]
-        public string Author { get; set; }
-
-        /// <summary>
         /// 가격
         /// </summary>
         [Required]
@@ -43,11 +34,18 @@ namespace Thweb.Model.Model
         public int ProductTF { get; set; }
 
         /// <summary>
-        /// 사용여부
+        /// 등록일
         /// </summary>
-
         [Required]
         public DateTime RegDate { get; set; }
+
+
+        public int CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        [ValidateNever]
+        public Category Category { get; set; }
+
 
     }
 }

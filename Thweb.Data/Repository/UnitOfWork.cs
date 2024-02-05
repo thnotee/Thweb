@@ -14,11 +14,13 @@ namespace Thweb.Data.Repository
         private ThwebDbContext _db;
         public IThwebUserRepository ThwebUser { get; private set; }
         public ICategoryRepository Category { get; private set; }
+        public IProductRepository Product { get; private set; }
         public UnitOfWork(ThwebDbContext db)
         {
             _db = db;
             ThwebUser = new ThwebUserRepository(_db);
             Category = new CategoryRepository(_db);
+            Product = new ProductRepository(_db);
         }
 
         public void Save()

@@ -1,0 +1,60 @@
+﻿@model Product;
+@{
+    Layout = "/Views/Shared/_Layout_admin.cshtml";
+}
+<div class="container w-full p-10">
+    <form method="post" asp-action="Upsert">
+
+        @if (Model == null)
+        {
+            <p class="text-center text-2xl">카테고리 추가</p>
+        }
+        else
+        {
+            <p class="text-center text-2xl">카테고리 수정</p>
+        }
+
+        <div class="my-4">
+            <input type="hidden" asp-for="@Model.Id" />
+            <input asp-for="@Model.Title"
+                   class="th-input"
+                   placeholder="상품명을 입력해주세요." />
+            <span asp-validation-for="@Model.Title" class="text-red-500 text-sm p-4"></span>
+
+        </div>
+
+        <div class="my-4">
+            <input type="hidden" asp-for="@Model.Description" />
+            <input asp-for="@Model.Description"
+                   class="th-input"
+                   placeholder="상품 설명을 입력해주세요." />
+            <span asp-validation-for="@Model.Description" class="text-red-500 text-sm p-4"></span>
+
+        </div>
+
+        <div class="my-4">
+            <input type="hidden" asp-for="@Model.Price" />
+            <input asp-for="@Model.Price"
+                   class="th-input"
+                   placeholder="상품 가격을 입력해주세요." />
+            <span asp-validation-for="@Model.Price" class="text-red-500 text-sm p-4"></span>
+
+        </div>
+
+   
+
+        @if (Model == null)
+        {
+            <button class="th-bl-btn">추가</button>
+        }
+        else
+        {
+            <button class="th-bl-btn">수정</button>
+        }
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("~/Views/Shared/_Partial/_SweetAlert.cshtml")
+
+}

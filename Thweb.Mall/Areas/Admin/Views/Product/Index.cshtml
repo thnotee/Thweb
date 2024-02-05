@@ -1,0 +1,65 @@
+﻿@model PagedList<Product>;
+@{
+    Layout = "/Views/Shared/_Layout_admin.cshtml";
+}
+
+
+<div class="container w-full p-10">
+
+    <table id="" class="th_table w-full border border-gray-500">
+        <thead>
+            <tr>
+                <th class="">상품코드</th>
+                <th class="">상품명</th>
+                <th class="">가격</th>
+                <th class="">사용여부</th>
+                <th class="">카테고리</th>
+                <th class="">등록일</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Title</td>
+                    <td>@item.Price</td>
+                    <td>@item.ProductTF</td>
+                    <th>@item.Category.Name</th>
+                    <td>@item.RegDate.ToString("yyyy-MM-dd")</td>
+                </tr>
+
+            }
+        </tbody>
+
+    </table>
+
+    <div class="flex justify-between mt-4">
+        <div class="flex w-full">
+            <input class="th-input w-2/4 px-4" />
+            <button class="th-bl-btn mx-2 w-1/4 ">검색</button>
+        </div>
+        <div>
+            @await Html.PartialAsync("~/Views/Shared/_Partial/_Paging.cshtml", Model.pagerOptions)
+        </div>
+    </div>
+
+    <button class="th-bl-btn my-9 h-5">상품 추가하기</button>
+    <button class="th-wh-btn my-2">나를 클릭하세요</button>
+
+
+
+</div>
+
+
+
+@section Scripts {
+    @await Html.PartialAsync("~/Views/Shared/_Partial/_SweetAlert.cshtml")
+    <script>
+
+        function Remove(id) {
+            $("#categoryId").val(id)
+            $("#removeForm").submit();
+        }
+    </script>
+}

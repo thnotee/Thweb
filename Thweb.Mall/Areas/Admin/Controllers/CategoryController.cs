@@ -58,7 +58,7 @@ namespace Thweb.Mall.Areas.Admin.Controllers
             return View();
         }
 
-
+        [HttpPost]
         public async Task<IActionResult> Remove(int categoryId)
         {
 

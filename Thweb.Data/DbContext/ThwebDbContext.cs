@@ -19,5 +19,6 @@ namespace Thweb.Data.DbContext
 
         public DbSet<ThwebUser> ThwebUsers { get; set; }
         public DbSet<Category> Category { get; set; }
+        public DbSet<Product> Product { get; set; }
     }
 }
