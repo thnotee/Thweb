@@ -246,6 +246,34 @@ namespace Thweb.Data.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("Thweb.Model.Model.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TableId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TableName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Image");
+                });
+
             modelBuilder.Entity("Thweb.Model.Model.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -262,9 +290,6 @@ namespace Thweb.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductTF")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegDate")

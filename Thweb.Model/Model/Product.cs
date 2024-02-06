@@ -26,19 +26,10 @@ namespace Thweb.Model.Model
         public int Price { get; set; }
 
         /// <summary>
-        /// 사용여부 
-        ///         0 : 미사용
-        ///         1 : 사용
-        /// </summary>
-        [Required]
-        public int ProductTF { get; set; }
-
-        /// <summary>
         /// 등록일
         /// </summary>
         [Required]
         public DateTime RegDate { get; set; }
-
 
         public int CategoryId { get; set; }
 

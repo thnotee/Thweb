@@ -9,10 +9,9 @@ namespace Thweb.Data.Repository.IRepository
    public interface IUnitOfWork
     {
         IThwebUserRepository ThwebUser { get; }
-
         ICategoryRepository Category { get; }
-
         IProductRepository Product { get; }
+        IImageRepository Image { get; }
 
         void Save();
     }

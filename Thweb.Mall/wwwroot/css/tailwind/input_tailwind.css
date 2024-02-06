@@ -3,17 +3,55 @@
 @tailwind utilities;
 
 @layer components {
+    .th.blue.btn {
+        @apply text-white bg-blue-700 text-sm px-5 py-2.5 me-2 mb-2 font-medium rounded-lg;
+    }
+
+        .th.blue.btn :hover {
+            @apply bg-blue-800;
+        }
+
+        .th.blue.btn :focus {
+            @apply ring-4 ring-blue-300 outline-none;
+        }
+
+
+    .th-dark-btn {
+        @apply text-white bg-gray-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2;
+    }
+
+        .th-dark-btn :hover {
+            @apply bg-gray-900;
+        }
+
+        .th-dark-btn :focus {
+            @apply ring-4 ring-gray-300 outline-none;
+        }
+
+    .th-red-btn {
+        @apply text-white bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2;
+    }
+
+        .th-red-btn :hover {
+            @apply bg-red-800;
+        }
+
+        .th-red-btn :focus {
+            @apply ring-4 ring-red-300 outline-none;
+        }
+
+    .th-bl-btn {
+        @apply h-10 px-6 font-semibold rounded-md bg-black text-white inline-block m-0;
+    }
+
+
     .th-wh-btn {
         @apply h-10 px-6 font-semibold rounded-md border border-slate-200 text-slate-900 inline-block m-0;
     }
 
-    .th-bl-btn {
-        @apply h-10 px-6 font-semibold rounded-md bg-black text-white inline-block m-0 ;
-    }
 
-    .th-red-btn {
-        @apply h-10 px-6 font-semibold rounded-md bg-red-500 text-white inline-block m-0;
-    }
+
+
 
     .th-input {
         @apply flex h-10 w-full rounded-md border px-3 py-2;
@@ -27,4 +65,3 @@
             @apply cursor-not-allowed opacity-50;
         }
 }
-

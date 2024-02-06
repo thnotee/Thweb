@@ -1,11 +1,11 @@
-﻿@model Product;
+﻿@model ProductVm;
 @{
     Layout = "/Views/Shared/_Layout_admin.cshtml";
 }
 <div class="container w-full p-10">
-    <form method="post" asp-action="Upsert">
+    <form method="post" asp-action="Upsert" enctype="multipart/form-data">
 
-        @if (Model == null)
+        @if (Model.Product.Id == 0)
         {
             <p class="text-center text-2xl">카테고리 추가</p>
         }
@@ -15,35 +15,63 @@
         }
 
         <div class="my-4">
-            <input type="hidden" asp-for="@Model.Id" />
-            <input asp-for="@Model.Title"
+            <input type="hidden" asp-for="Product.Id" />
+            <label asp-for="Product.Title"
+                   class="block mb-2 text-base font-medium text-gray-900 dark:text-white">상품명 입력하세요.</label>
+            <input asp-for="Product.Title"
                    class="th-input"
                    placeholder="상품명을 입력해주세요." />
-            <span asp-validation-for="@Model.Title" class="text-red-500 text-sm p-4"></span>
-
+            <span asp-validation-for="Product.Title" class="text-red-500 text-sm p-4"></span>
         </div>
 
         <div class="my-4">
-            <input type="hidden" asp-for="@Model.Description" />
-            <input asp-for="@Model.Description"
-                   class="th-input"
-                   placeholder="상품 설명을 입력해주세요." />
-            <span asp-validation-for="@Model.Description" class="text-red-500 text-sm p-4"></span>
-
+            <label asp-for="Product.Description"
+                   class="block mb-2 text-base font-medium text-gray-900 dark:text-white">상품설명을 입력하세요.</label>
+            <textarea asp-for="Product.Description"></textarea>
+            <span asp-validation-for="Product.Description" class="text-red-500 text-sm p-4"></span>
         </div>
 
         <div class="my-4">
-            <input type="hidden" asp-for="@Model.Price" />
-            <input asp-for="@Model.Price"
+            <label asp-for="Product.Price"
+            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">상품가격을 입력하세요.</label>
+            <input asp-for="Product.Price"
                    class="th-input"
                    placeholder="상품 가격을 입력해주세요." />
-            <span asp-validation-for="@Model.Price" class="text-red-500 text-sm p-4"></span>
+            <span asp-validation-for="Product.Price" class="text-red-500 text-sm p-4"></span>
+        </div>
+
+        <div class="my-4">
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="files">Upload file</label>
+            <input 
+                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                aria-describedby="file_input_help"
+                id="files" type="file" name="files" multiple />
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
 
         </div>
 
-   
+        <div class="my-4">
 
-        @if (Model == null)
+            <label for="large" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">카테고리를 선택하세요</label>
+            <select id="large"
+                asp-for="Product.CategoryId"
+                asp-items="@Model.CategoryList"
+                class="
+block w-full px-4 py-3 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 h-10
+focus:ring-blue-500 
+focus:border-blue-500 
+dark:bg-gray-700 
+dark:border-gray-600 
+dark:placeholder-gray-400 
+dark:text-white 
+dark:focus:ring-blue-500 
+dark:focus:border-blue-500">
+                <option disabled selected>Choose a country</option>
+            </select>
+            <span asp-validation-for="Product.CategoryId" class="text-red-500 text-sm p-4"></span>
+        </div>
+
+        @if (Model.Product.Id == 0)
         {
             <button class="th-bl-btn">추가</button>
         }
@@ -56,5 +84,16 @@
 
 @section Scripts {
     @await Html.PartialAsync("~/Views/Shared/_Partial/_SweetAlert.cshtml")
+
+    <!-- Place the first <script> tag in your HTML's <head> -->
+    <script src="https://cdn.tiny.cloud/1/ipga39m0e4iub3da2spb4imu9p4gc3w1yf36io9n0lsitrpf/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+    </script>
 
 }
