@@ -11,6 +11,12 @@
     <None Include="Areas\Admin\Views\User\Index.cshtml" />
     <None Include="Areas\Admin\Views\_ViewImports.cshtml" />
     <None Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <None Include="wwwroot\images\category_icon\beating-heart.svg" />
+    <None Include="wwwroot\images\category_icon\coffee.svg" />
+    <None Include="wwwroot\images\category_icon\pill.svg" />
+    <None Include="wwwroot\images\category_icon\popcorn.svg" />
+    <None Include="wwwroot\images\category_icon\icecream.svg" />
+    <None Include="wwwroot\images\category_icon\drink.svg" />
   </ItemGroup>
 
   <ItemGroup>

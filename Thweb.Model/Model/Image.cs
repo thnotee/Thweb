@@ -12,9 +12,11 @@ namespace Thweb.Model.Model
         [Key]
         public int Id { get; set; }
         [Required]
-        public string ImageUrl { get; set; }
+        public string DirectoryPath { get; set; }
         [Required]
-        public string FileName { get; set; }
+        public string SaveFileName { get; set; }
+        [Required]
+        public string OriginFileName { get; set; }
         [Required]
         public string TableName { get; set; }  // 연결된 테이블 이름
         [Required]

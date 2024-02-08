@@ -37,6 +37,12 @@ namespace Thweb.Model.Model
         [ValidateNever]
         public Category Category { get; set; }
 
+        [ForeignKey("CategoryId")]
+
+        [NotMapped]
+        [ValidateNever]
+        public IEnumerable<Image> Images { get; set; }
+
 
     }
 }

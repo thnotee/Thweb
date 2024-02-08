@@ -47,8 +47,23 @@
                 aria-describedby="file_input_help"
                 id="files" type="file" name="files" multiple />
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
-
         </div>
+
+        @if (Model.Product.Images.Any())
+        {
+            
+            <div class="my-4 flex">
+
+                @foreach (var img in Model.Product.Images)
+                {
+                    var imagePath = img.DirectoryPath + img.SaveFileName;
+                    <div>
+                        <img src="@imagePath" alt="ProductImg" class="w-1/3" />
+                    </div>
+                }
+            </div>
+     
+        }
 
         <div class="my-4">
 

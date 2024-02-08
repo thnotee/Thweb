@@ -23,7 +23,19 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="">상품이미지</td>
+                        <td>
+                            <div class="w-[200px] h-[100px]">
+                                @if (item.Images.Any())
+                                {
+                                    var imagePath = item.Images.FirstOrDefault().DirectoryPath + item.Images.FirstOrDefault().SaveFileName;
+                                    <img src="@imagePath" alt="ProductImg" />
+                                }
+                                else
+                                {
+                                    <img src="https://placeholder.com/200x100/png" alt="ProductImg" class="" />
+                                }
+                            </div>
+                        </td>
                         <td>@item.Id</td>
                         <td>@item.Title</td>
                         <td>@item.Price</td>
