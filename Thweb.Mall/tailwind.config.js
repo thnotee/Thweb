@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
         "./Views/**/*.cshtml",
@@ -7,15 +6,13 @@ module.exports = {
         "./Areas/**/Views/**/*.cshtml",
         "./Areas/**/Pages/*.cshtml",
         "./Areas/**/Pages/**/*.cshtml",
-        "./node_modules/flowbite/**/*.js",
     ],
-  theme: {
-    extend: {},
-  },
+    theme: {
+        extend: {
+            
+        },
+    },
     plugins: [
-        require('flowbite/plugin')
+        
     ],
 }
-
-//npx tailwindcss -i ./wwwroot/css/tailwind/input_tailwind.css -o ./wwwroot/css/app.css --watch
-//npx tailwindcss -i ./wwwroot/css/tailwind/input_tailwind.css -o ./wwwroot/css/app.css

@@ -2,10 +2,12 @@
   "version": "1.0.0",
   "name": "asp.net",
   "private": true,
-  "devDependencies": {
-    "tailwindcss": "^3.4.1"
+  "scripts": {
+    "css:build": "npx tailwindcss -i ./wwwroot/css/tailwind/input_tailwind.css -o ./wwwroot/css/app.css --postcss"
   },
-  "dependencies": {
-    "flowbite": "^2.2.1"
+  "devDependencies": {
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1"
   }
 }

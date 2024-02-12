@@ -49,7 +49,8 @@
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
         </div>
 
-        @if (Model.Product.Images.Any())
+        
+        @if (Model.Product.Images != null  && Model.Product.Images.Any())
         {
             
             <div class="my-4 flex">
