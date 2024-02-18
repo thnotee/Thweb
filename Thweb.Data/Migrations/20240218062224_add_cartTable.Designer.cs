@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Thweb.Data.DbContext;
 
@@ -11,9 +12,11 @@ using Thweb.Data.DbContext;
 namespace Thweb.Data.Migrations
 {
     [DbContext(typeof(ThwebDbContext))]
-    partial class ThwebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240218062224_add_cartTable")]
+    partial class add_cartTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

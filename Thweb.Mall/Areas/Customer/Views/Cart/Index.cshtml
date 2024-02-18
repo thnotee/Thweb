@@ -1,0 +1,163 @@
+﻿@model IEnumerable<Cart>
+<div class="">
+
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+
+            <div class="flex flex-wrap border border-gray-200 rounded-lg shadow" id="remove_@item.Id">
+                <div class="w-1/4 p-7">
+                    @if (item.Product.Images != null && item.Product.Images.Any())
+                    {
+                        var firstImg = item.Product.Images.FirstOrDefault();
+                        var imagePath = firstImg.DirectoryPath + firstImg.SaveFileName;
+
+                        <img class="rounded-t-lg"
+                             src="@imagePath"
+                             alt="product image" />
+                    }
+                </div>
+
+                <div class="w-1/4 p-3 flex items-center justify-center">
+
+                    <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                        @item.Product.Title
+                    </h5>
+                </div>
+
+                <div class="w-1/4 p-3 flex items-center justify-center">
+                    <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                        @string.Format("{0:N0}", item.Product.Price)원 X
+                    </h5>
+                    <div class="max-w-xs mx-3">
+                        <div class="relative flex items-center max-w-[8rem]">
+                            <button type="button" data-id="@item.Id"
+                                    class="minus-button
+bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                          stroke-width="2" d="M1 1h16" />
+                                </svg>
+                            </button>
+                            <input type="text" id="quantity-input" data-input-counter data-input-counter-min="1"
+                                   data-input-counter-max="50" aria-describedby="helper-text-explanation"
+                                   class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   placeholder="999" value="@item.Count" required readonly>
+                            <button type="button" data-id="@item.Id"
+                                    class="plus-button
+bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                          stroke-width="2" d="M9 1v16M1 9h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-1/4 flex items-center justify-center">
+                    <button  onclick="Remove('@item.Id')"
+                        class="th-red-btn">삭제</button>
+                </div>
+
+            </div>
+
+        }
+    
+    }
+    
+   
+    
+</div>
+
+<hr class="my-3 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+<div class="flex justify-center">
+    <div class="text-2xl m-2 font-semibold flex items-center ">
+        총 주문금액<span class="text-2xl m-4 font-semibold  text-red-500">50,000원</span>
+        <button class="th-bl-btn">주문하기</button>
+    </div> 
+</div>
+<hr class="my-3 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+
+
+@section Scripts{
+
+    <script>
+
+        function Remove(cartId)
+        {
+            $.ajax({
+                type: 'POST',
+                url: "/Customer/Cart/Remove",
+                data: { cartId: cartId },
+                success: function (response) {
+                    console.log(response)
+                    if (response.seccess) {
+                        $("#remove_" + cartId).remove();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (response.seccess) {
+                        Swal.fire("삭제 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $(".plus-button").click(function () {
+                var cartId = $(this).data('id'); // Use data-id attribute to get the cartId
+                var input = $(this).siblings("input");
+                $.ajax({
+                    type: 'POST',
+                    url: "/Customer/Cart/Plus",
+                    data: { cartId: cartId },
+                    success: function (response) {
+                        console.log(response)
+                        if (response.seccess) {
+                            input.val(response.data); // value를 증가시킴
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        if (response.seccess) {
+                            Swal.fire("수량조절 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                        }
+                    }
+                });
+            });
+
+
+            $(".minus-button").click(function () {
+                var cartId = $(this).data('id'); // Use data-id attribute to get the cartId
+                var input = $(this).siblings("input");
+                if (input.val() == "1") {
+                    Swal.fire("1 이상 선택해주세요.");
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: "/Customer/Cart/Minus",
+                    data: { cartId: cartId },
+                    success: function (response) {
+                        console.log(response)
+                        if (response.seccess) {
+                            input.val(response.data); 
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        if (response.seccess) {
+                            Swal.fire("수량조절 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                        }
+                    }
+                });
+            });
+
+        });
+
+
+   
+    </script>
+}

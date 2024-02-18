@@ -36,10 +36,18 @@ namespace Thweb.Mall.Areas.Customer.Controllers
             return View(productList);
         }
 
-        public IActionResult Detail()
+        public async Task<IActionResult> Detail(int id)
         {
+            var product = new Product();
+            if (id != 0) 
+            {
+                product = await _unitOfWork.Product.GetAsync(x => x.Id == id);
+                Expression<Func<Image, bool>> tableName = x => (x.TableName == "Product" && x.TableId == id);
+                product.Images = await _unitOfWork.Image.GetAllAsync(tableName);
 
-            return View();
+            }
+            
+            return View(product);
         }
     }
 }

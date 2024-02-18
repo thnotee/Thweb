@@ -12,6 +12,7 @@ namespace Thweb.Data.Repository.IRepository
         ICategoryRepository Category { get; }
         IProductRepository Product { get; }
         IImageRepository Image { get; }
+        ICartRepository Cart { get; }
 
         void Save();
     }

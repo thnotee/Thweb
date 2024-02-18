@@ -22,6 +22,7 @@ namespace Thweb.Data.DbContext
         public DbSet<Product> Product { get; set; }
         public DbSet<Image> Image { get; set; }
 
-        
+        public DbSet<Cart> Cart { get; set; }
+
     }
 }

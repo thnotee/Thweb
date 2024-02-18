@@ -16,6 +16,8 @@ namespace Thweb.Data.Repository
         public ICategoryRepository Category { get; private set; }
         public IProductRepository Product { get; private set; }
         public IImageRepository Image { get; private set; }
+
+        public ICartRepository Cart { get; private set; }
         public UnitOfWork(ThwebDbContext db)
         {
             _db = db;
@@ -23,6 +25,7 @@ namespace Thweb.Data.Repository
             Category = new CategoryRepository(_db);
             Product = new ProductRepository(_db);
             Image = new ImageRepository(_db);
+            Cart = new CartRepository(_db);
         }
 
         public void Save()
