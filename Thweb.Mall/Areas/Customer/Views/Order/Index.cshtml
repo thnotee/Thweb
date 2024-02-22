@@ -1,0 +1,297 @@
+﻿@model IEnumerable<Cart>
+<div class="">
+    <section class="flex flex-col min-h-screen">
+
+        <div class="flex-1">
+            <div class="grid gap-4 p-4 md:gap-8 md:p-6 lg:gap-12">
+
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <div class="flex items-center gap-4">
+                            @{
+                                var imagePath = "https://placeholder.com/100x100/png";
+                                if (item.Product.Images != null && item.Product.Images.Any())
+                                {
+                                    var firstImg = item.Product.Images.FirstOrDefault();
+                                    imagePath = firstImg.DirectoryPath + firstImg.SaveFileName;
+                                }
+
+                            }
+                            <img src="@imagePath"
+                                 alt="Product image"
+                                 class="aspect-square rounded-md object-cover w-[200px] h-[100px]" />
+
+                            <div class="grid gap-1.5">
+                                <h2 class="font-semibold text-base sm:text-xl">@item.Product.Title</h2>
+                                <div class="text-sm tracking-tighter">상품번호: @item.Product.Id</div>
+                            </div>
+                            <div class="ml-auto grid gap-1 text-right">
+                                <div class="font-semibold">@(item.Product.Price * item.Product.Price)</div>
+                                <div class="text-sm tracking-tighter">@item.Product.Price X @item.Product.Price</div>
+                            </div>
+                        </div>
+                        <div data-orientation="horizontal" role="none" class="shrink-0 bg-gray-100 h-[1px] w-full"></div>
+                    }
+                }
+                <!--
+                <div class="flex items-center gap-4">
+                    <img src="https://placeholder.com/200x100/png"
+                         alt="Product image"
+                         class="aspect-square rounded-md object-cover w-[200px] h-[100px]" />
+                    <div class="grid gap-1.5">
+                        <h2 class="font-semibold text-base sm:text-xl">Flexi Wearables</h2>
+                        <div class="text-sm tracking-tighter">SKU: 1234567890</div>
+                    </div>
+                    <div class="ml-auto grid gap-1 text-right">
+                        <div class="font-semibold">Selling Fast</div>
+                        <div class="text-sm tracking-tighter">Ships within 2-3 days</div>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+    </section>
+
+    <section class="border rounded-lg p-4">
+        <div class="grid gap-4">
+            <div class="flex items-center gap-4">
+                <h1 class="font-semibold text-lg md:text-xl lg:text-2xl">배송정보입력</h1>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+                <div class="grid gap-2">
+                    <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
+                           for="street">
+                        Street address
+                    </label>
+                    <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                           id="street"
+                           placeholder="Enter your street address" />
+                </div>
+                <div class="grid gap-2">
+                    <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
+                           for="city">
+                        City
+                    </label>
+                    <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                           id="city"
+                           placeholder="Enter your city" />
+                </div>
+                <div class="grid gap-2">
+                    <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
+                           for="state">
+                        State
+                    </label>
+                    <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                           id="state"
+                           placeholder="Enter your state" />
+                </div>
+                <div class="grid gap-2">
+                    <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
+                           for="zip">
+                        ZIP code
+                    </label>
+                    <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                           id="zip"
+                           placeholder="Enter your ZIP code" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+<hr class="my-3 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+<div class="flex justify-center">
+    <div class="text-2xl m-2 font-semibold flex items-center ">
+        총 주문금액<span class="text-2xl m-4 font-semibold  text-red-500">50,000원</span>
+        <button type="button" class="th-bl-btn" onclick="AddOrder();">주문하기</button>
+        <!--<button type="button" class="th-bl-btn" onclick="kakaoPay();">주문하기</button>-->
+
+        
+    </div>
+</div>
+<hr class="my-3 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+
+
+@section Scripts {
+
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script>
+
+        var useremail = "xoghks1904@naver.com";
+        var username = "이태환";
+        var userphone = "010-5670-5842";
+        var postcode = '12345';
+        var postname = '서울특별시 강남구 삼성동';
+        var postdetail = '123-456';
+
+        //아임포트 초기화
+        //IMP.init('imp73787316') // 예: 'imp00000000a'
+
+        //주문번호 생성
+        var today = new Date();
+        var hours = today.getHours(); // 시
+        var minutes = today.getMinutes();  // 분
+        var seconds = today.getSeconds();  // 초
+        var milliseconds = today.getMilliseconds();
+        var makeMerchantUid = `${hours}` + `${minutes}` + `${seconds}` + `${milliseconds}`;
+
+        function kakaoPay() {
+
+            IMP.init("imp73787316"); // 가맹점 식별코드
+            IMP.request_pay({
+                pg: 'kakaopay.TC0ONETIME', // PG사 코드표에서 선택
+                pay_method: 'card', // 결제 방식
+                merchant_uid: "IMP" + makeMerchantUid, // 결제 고유 번호
+                name: '상품명', // 제품명
+                amount: 100, // 가격
+                //구매자 정보 ↓
+                buyer_email: `${useremail}`,
+                buyer_name: `${username}`,
+                buyer_tel: `${userphone}`,
+                buyer_addr: `${postname} ${postdetail}`,
+                buyer_postcode: `${postcode}`
+            }, function (rsp) { // callback
+                if (rsp.success) { //결제 성공시
+                    console.log(rsp);
+                    AddOrder(rsp)
+                    //결제 성공시 프로젝트 DB저장 요청
+                    if (response.success == 200) { // DB저장 성공시
+                        alert('결제 완료!')
+                        //window.location.reload();
+                    } else { // 결제완료 후 DB저장 실패시
+                        alert(`error:[${response.status}]\n결제요청이 승인된 경우 관리자에게 문의바랍니다.`);
+                        // DB저장 실패시 status에 따라 추가적인 작업 가능성
+                    }
+                } else if (rsp.success == false) { // 결제 실패시
+                    alert(rsp.error_msg)
+                }
+            });
+
+        }
+
+        
+        function AddOrder(kakaoRes) {
+
+            var jsonData = {
+                success: true,
+                imp_uid: "imp_427267216363",
+                pay_method: "point",
+                merchant_uid: "IMP172423762",
+                name: "상품명",
+                paid_amount: 100,
+                currency: "KRW",
+                pg_provider: "kakaopay",
+                pg_type: "payment",
+                pg_tid: "T5d704bb196d5d20b0ac",
+                apply_num: "",
+                buyer_name: "이태환",
+                buyer_email: "xoghks1904@naver.com",
+                buyer_tel: "010-5670-5842",
+                buyer_addr: "서울특별시 강남구 삼성동 123-456",
+                buyer_postcode: "12345",
+                custom_data: null,
+                status: "paid",
+                paid_at: 1708590291,
+                receipt_url: "https://mockup-pg-web.kakao.com/v1/confirmation/p/T5d704bb196d5d20b0ac/d1bdc7584fa7c9f58aafaa47b581429bca3d4245f0788654979897f5a41682ae",
+                card_name: null,
+                bank_name: null,
+                card_quota: 0,
+                card_number: ""
+            };
+
+            kakaoRes = jsonData;
+
+            $.ajax({
+                url: '/Customer/Order/AddOrder', // 전송할 서버의 URL을 입력하세요.
+                type: 'POST', // HTTP 메서드를 지정합니다. 여기서는 POST를 사용합니다.
+                data: JSON.stringify(kakaoRes), // 전송할 데이터를 JSON 형식으로 변환합니다.
+                contentType: 'application/json', // 서버로 전송할 컨텐츠의 타입을 지정합니다.
+                dataType: 'json', // 서버에서 반환되는 데이터의 타입을 지정합니다.
+                success: function (data) { // 요청이 성공적으로 완료되었을 때 호출 될 함수를 지정합니다.
+                    console.log(data); // 성공적으로 반환된 데이터를 콘솔에 출력합니다.
+                },
+                error: function (xhr, status, error) { // 요청이 실패하였을 때 호출 될 함수를 지정합니다.
+                    console.error(error); // 에러 메시지를 콘솔에 출력합니다.
+                }
+            });
+
+        };
+
+
+        function Remove(cartId) {
+            $.ajax({
+                type: 'POST',
+                url: "/Customer/Cart/Remove",
+                data: { cartId: cartId },
+                success: function (response) {
+                    console.log(response)
+                    if (response.seccess) {
+                        $("#remove_" + cartId).remove();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (response.seccess) {
+                        Swal.fire("삭제 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $(".plus-button").click(function () {
+                var cartId = $(this).data('id'); // Use data-id attribute to get the cartId
+                var input = $(this).siblings("input");
+                $.ajax({
+                    type: 'POST',
+                    url: "/Customer/Cart/Plus",
+                    data: { cartId: cartId },
+                    success: function (response) {
+                        console.log(response)
+                        if (response.seccess) {
+                            input.val(response.data); // value를 증가시킴
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        if (response.seccess) {
+                            Swal.fire("수량조절 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                        }
+                    }
+                });
+            });
+
+
+            $(".minus-button").click(function () {
+                var cartId = $(this).data('id'); // Use data-id attribute to get the cartId
+                var input = $(this).siblings("input");
+                if (input.val() == "1") {
+                    Swal.fire("1 이상 선택해주세요.");
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: "/Customer/Cart/Minus",
+                    data: { cartId: cartId },
+                    success: function (response) {
+                        console.log(response)
+                        if (response.seccess) {
+                            input.val(response.data);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        if (response.seccess) {
+                            Swal.fire("수량조절 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                        }
+                    }
+                });
+            });
+
+        });
+
+
+
+    </script>
+}

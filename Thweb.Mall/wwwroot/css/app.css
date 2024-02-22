@@ -960,6 +960,10 @@ video {
   height: 1px;
 }
 
+.h-\[200px\] {
+  height: 200px;
+}
+
 .h-full {
   height: 100%;
 }

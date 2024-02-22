@@ -35,9 +35,6 @@ namespace Thweb.Mall.Areas.Customer.Controllers
                     item.Product.Images = await _unitOfWork.Image.GetAllAsync(tableName);
                 }
             }
-            
-
-
             return View(cartList);
         }
 
@@ -63,6 +60,7 @@ namespace Thweb.Mall.Areas.Customer.Controllers
                 cart = new Cart();
                 cart.UserId = userId;
                 cart.ProductId = productId;
+                cart.Count = 1;
                 await _unitOfWork.Cart.AddAsync(cart);
                 _unitOfWork.Save();
             }

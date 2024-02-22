@@ -10,7 +10,7 @@ function m_menu_open() {
 
 function AddToCart(productId) {
     $.ajax({
-        type: 'POST',
+        type: 'post',
         url: "/Customer/Cart/AddToCart",
         data: { productId: productId },
         success: function (response) {
@@ -22,6 +22,9 @@ function AddToCart(productId) {
         error: function (xhr, status, error)
         {
             Swal.fire("에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+            console.log(xhr);
+            console.log(status);
+            console.log(error);
         }
     });
 }
