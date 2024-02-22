@@ -16,6 +16,7 @@
     }
     
 }
+
 <div class="">
     <section class="flex flex-col min-h-screen">
 
@@ -144,7 +145,7 @@
         var postcode = '12345';
         var postname = '서울특별시 강남구 삼성동';
         var postdetail = '123-456';
-
+        
         //아임포트 초기화
         //IMP.init('imp73787316') // 예: 'imp00000000a'
 
@@ -163,7 +164,7 @@
                 pg: 'kakaopay.TC0ONETIME', // PG사 코드표에서 선택
                 pay_method: 'card', // 결제 방식
                 merchant_uid: "IMP" + makeMerchantUid, // 결제 고유 번호
-                name: "@orderTitle", // 제품명
+                name: "@Html.Raw(orderTitle)", // 제품명
                 amount: @orderTotal, // 가격
                 //구매자 정보 ↓
                 buyer_email: `${useremail}`,
