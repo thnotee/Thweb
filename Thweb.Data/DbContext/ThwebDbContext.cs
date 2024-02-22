@@ -24,5 +24,8 @@ namespace Thweb.Data.DbContext
 
         public DbSet<Cart> Cart { get; set; }
 
+        public DbSet<OrderHeader> OrderHeader { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
+
     }
 }

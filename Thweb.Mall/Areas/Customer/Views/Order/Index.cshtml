@@ -1,4 +1,21 @@
 ﻿@model IEnumerable<Cart>
+@{
+    var orderTotal = 0;
+    var orderTitle = "";
+    if (Model != null)
+    {
+        orderTotal = Model.Sum(item => item.Count * item.Product.Price);
+        if (Model.Count() == 1)
+        {
+            orderTitle = Model.FirstOrDefault().Product.Title;
+        }
+        else
+        {
+            orderTitle = Model.FirstOrDefault().Product.Title + "외 " + (Model.Count() - 1) + "건";
+        }
+    }
+    
+}
 <div class="">
     <section class="flex flex-col min-h-screen">
 
@@ -107,8 +124,8 @@
 <div class="flex justify-center">
     <div class="text-2xl m-2 font-semibold flex items-center ">
         총 주문금액<span class="text-2xl m-4 font-semibold  text-red-500">50,000원</span>
-        <button type="button" class="th-bl-btn" onclick="AddOrder();">주문하기</button>
-        <!--<button type="button" class="th-bl-btn" onclick="kakaoPay();">주문하기</button>-->
+        <!--<button type="button" class="th-bl-btn" onclick="AddOrder();">주문하기</button>-->
+        <button type="button" class="th-bl-btn" onclick="kakaoPay();">주문하기</button>
 
         
     </div>
@@ -146,8 +163,8 @@
                 pg: 'kakaopay.TC0ONETIME', // PG사 코드표에서 선택
                 pay_method: 'card', // 결제 방식
                 merchant_uid: "IMP" + makeMerchantUid, // 결제 고유 번호
-                name: '상품명', // 제품명
-                amount: 100, // 가격
+                name: "@orderTitle", // 제품명
+                amount: @orderTotal, // 가격
                 //구매자 정보 ↓
                 buyer_email: `${useremail}`,
                 buyer_name: `${username}`,
@@ -175,7 +192,7 @@
 
         
         function AddOrder(kakaoRes) {
-
+            /*
             var jsonData = {
                 success: true,
                 imp_uid: "imp_427267216363",
@@ -202,23 +219,26 @@
                 card_quota: 0,
                 card_number: ""
             };
-
-            kakaoRes = jsonData;
+            */
+            //kakaoRes = jsonData;
+            
 
             $.ajax({
-                url: '/Customer/Order/AddOrder', // 전송할 서버의 URL을 입력하세요.
-                type: 'POST', // HTTP 메서드를 지정합니다. 여기서는 POST를 사용합니다.
-                data: JSON.stringify(kakaoRes), // 전송할 데이터를 JSON 형식으로 변환합니다.
-                contentType: 'application/json', // 서버로 전송할 컨텐츠의 타입을 지정합니다.
-                dataType: 'json', // 서버에서 반환되는 데이터의 타입을 지정합니다.
-                success: function (data) { // 요청이 성공적으로 완료되었을 때 호출 될 함수를 지정합니다.
-                    console.log(data); // 성공적으로 반환된 데이터를 콘솔에 출력합니다.
+                type: 'POST',
+                url: '/Customer/Order/AddOrder',
+                data: kakaoRes,
+                success: function (response) {
+                    console.log(response)
+                    if (response.seccess) {
+                        alert("성공");
+                    }
                 },
-                error: function (xhr, status, error) { // 요청이 실패하였을 때 호출 될 함수를 지정합니다.
-                    console.error(error); // 에러 메시지를 콘솔에 출력합니다.
+                error: function (xhr, status, error) {
+                    if (response.seccess) {
+                        Swal.fire("삭제 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                    }
                 }
             });
-
         };
 
 
