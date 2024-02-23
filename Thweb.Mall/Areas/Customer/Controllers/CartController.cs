@@ -76,9 +76,20 @@ namespace Thweb.Mall.Areas.Customer.Controllers
              cart.Count += 1;
             _unitOfWork.Cart.Update(cart);
             _unitOfWork.Save();
+
+            var orderTotal = 0;
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            IEnumerable<Cart> cartList = await _unitOfWork.Cart.GetAllAsync(u => u.UserId == userId, includeProperties: "Product");
+            if (cartList != null)
+            {
+                orderTotal = cartList.Sum(item => item.Count * item.Product.Price);
+            }
+
+            var data = new { orderTotal = orderTotal, cartCount = cart.Count };
             /*HttpContext.Session.SetInt32(SD.SessionCart,
                    _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() + 1);*/
-            return Json(new { seccess = true, data = cart.Count });
+            return Json(new { seccess = true, data });
 
         }
 
@@ -89,9 +100,19 @@ namespace Thweb.Mall.Areas.Customer.Controllers
             cart.Count -= 1;
             _unitOfWork.Cart.Update(cart);
             _unitOfWork.Save();
+
+            var orderTotal = 0;
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            IEnumerable<Cart> cartList = await _unitOfWork.Cart.GetAllAsync(u => u.UserId == userId, includeProperties: "Product");
+            if (cartList != null) {
+                orderTotal = cartList.Sum(item => item.Count * item.Product.Price);
+            }
+
+            var data = new { orderTotal = orderTotal, cartCount = cart.Count };
             /*HttpContext.Session.SetInt32(SD.SessionCart,
                    _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() + 1);*/
-            return Json(new { seccess = true, data = cart.Count });
+            return Json(new { seccess = true, data });
 
         }
 
@@ -101,6 +122,16 @@ namespace Thweb.Mall.Areas.Customer.Controllers
             var cart = await _unitOfWork.Cart.GetAsync(u => u.Id == cartId);
             _unitOfWork.Cart.Remove(cart);
             _unitOfWork.Save();
+
+            var orderTotal = 0;
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            IEnumerable<Cart> cartList = await _unitOfWork.Cart.GetAllAsync(u => u.UserId == userId, includeProperties: "Product");
+            if (cartList != null)
+            {
+                orderTotal = cartList.Sum(item => item.Count * item.Product.Price);
+            }
+
             /*
             HttpContext.Session.SetInt32(SD.SessionCart,
                     _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1);

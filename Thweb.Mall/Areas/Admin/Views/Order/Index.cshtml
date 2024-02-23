@@ -1,0 +1,71 @@
+﻿@model IEnumerable<OrderHeader>
+@{
+    Layout = "/Views/Shared/_Layout_admin.cshtml";
+}
+
+
+<div class="mt-4">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        주문번호
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        상품명
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        결제금액
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        결제상태
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model)
+                {
+                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            @item.OrderNo
+                        </th>
+                        <td class="px-6 py-4">
+                            @item.Name
+                        </td>
+                        <td class="px-6 py-4">
+                            @item.PaidAmount
+                        </td>
+                        <td class="px-6 py-4">
+                            @if (item.State == "paid")
+                            {
+                                <span>결제완료</span>
+                            }
+                            else
+                            {
+
+                                <span>미결제</span>
+                            }
+
+                        </td>
+                        <td class="px-6 py-4">
+                            <a asp-area="Admin" asp-controller="Order" asp-action="Detail" asp-route-key="@item.OrderNo"
+                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                상세
+                            </a>
+                        </td>
+                    </tr>
+                
+                
+                }
+             
+            
+            </tbody>
+        </table>
+    </div>
+
+
+</div>

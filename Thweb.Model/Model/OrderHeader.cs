@@ -27,25 +27,25 @@ namespace Thweb.Model.Model
         /// <summary>
         /// 우편번호
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "필수값입니다.")]
         public string BuyerPostCode { get; set; }
 
         /// <summary>
         /// 주소 + 상세주소
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "필수값입니다.")]
         public string BuyerPostAddr { get; set; }
 
         /// <summary>
         /// 주문자 이름
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "필수값입니다.")]
         public string BuyerName { get; set; }
 
         /// <summary>
         /// 주문자 명
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "필수값입니다.")]
         public string BuyerPhoneNumber { get; set; }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Thweb.Model.Model
         ///       "cancelled" = 결제취소
         ///       "failed" = "결제 실패"
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "필수값입니다.")]
         public string State { get; set; }
 
         /// <summary>
@@ -88,5 +88,7 @@ namespace Thweb.Model.Model
         /// 배송시작일
         /// </summary>
         public DateTime? ShippingDate { get; set; }
+
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

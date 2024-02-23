@@ -1,0 +1,61 @@
+﻿@model IEnumerable<OrderHeader>
+@{
+}
+
+
+<div>
+    <div class="text-2xl m-4 font-semibold">
+        주문내역
+    </div>
+    <section>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <div class="border rounded-lg p-4 md:p-8">
+                    <h2 class="order_title font-semibold text-2xl" style="cursor:pointer"
+                    >(@item.OrderDate.ToString("yyyy-MM-dd")) @item.Name</h2>
+                        <div class="order_detail" style="display:none;">
+                        <div class="grid gap-4">
+                        
+                            @foreach (var detail in item.OrderDetails)
+                            {
+                                <div class="grid gap-1">
+                                    <div class="font-semibold">@detail.Product.Title</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400"> @string.Format("{0:N0}", detail.Product.Price)</div>
+                                </div>
+                            }
+                
+                        </div>
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <div class="flex items-start gap-2">
+                                <div class="font-semibold">총 수량</div>
+                                <div>@item.OrderDetails.Sum(x=>x.Count)</div>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <div class="font-semibold">Total</div>
+                                <div>@string.Format("{0:N0}", item.PaidAmount)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        
+        }
+        
+    </section>
+   
+</div>
+
+                
+@section Scripts {
+    <script>
+        $(function () {
+            $('.order_title').click(function () {
+                var accordionTxt = $(this).next('.order_detail');
+                accordionTxt.slideToggle();
+            });
+        });
+    </script>
+}

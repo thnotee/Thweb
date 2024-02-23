@@ -1,0 +1,167 @@
+﻿@model OrderHeader
+@{
+    Layout = "/Views/Shared/_Layout_admin.cshtml";
+}
+
+
+
+<div>
+    <form asp-area="Admin" asp-controller="Order" asp-action="Detail">
+
+    
+    <div class="text-2xl m-4 font-semibold">
+        주문내역
+    </div>
+    <section>
+        @if (Model != null)
+        {
+          
+            <input type="hidden" value="@Model.OrderNo" asp-for="OrderNo" />
+                <div class="border rounded-lg p-4 md:p-8">
+                    <h2 class="font-semibold text-2xl" style="cursor:pointer">
+                    (@Model.OrderDate.ToString("yyyy-MM-dd")) @Model.Name
+                </h2>
+                        
+                        <div class="grid gap-4">
+
+                            @foreach (var detail in Model.OrderDetails)
+                            {
+                                <div class="grid gap-1">
+                                    <div class="font-semibold">@detail.Product.Title</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400"> @string.Format("{0:N0}", detail.Product.Price)</div>
+                                </div>
+                            }
+                
+                        </div>
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <div class="flex items-start gap-2">
+                                <div class="font-semibold">총 수량</div>
+                            <div>@Model.OrderDetails.Sum(x => x.Count)</div>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <div class="font-semibold">Total</div>
+                            <div>@string.Format("{0:N0}", Model.PaidAmount)</div>
+                            </div>
+                        </div>
+                    
+                </div>
+
+            
+        
+        }
+        
+    </section>
+
+    <hr class="my-3 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+
+
+        <section class="border rounded-lg p-4">
+            <div class="grid gap-4">
+                <div class="flex items-center gap-4">
+                    <h1 class="font-semibold text-lg md:text-xl lg:text-2xl">배송정보입력</h1>
+                </div>
+                <div class="grid gap-4 md:grid-cols-2">
+                    <div class="grid gap-2">
+                        <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
+                           asp-for="BuyerName">
+                            받는사람
+                        </label>
+                        <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                               asp-for="BuyerName"
+                               value="@Model.BuyerName"
+                               placeholder="홍길동" />
+                        <span asp-validation-for="BuyerName" class="text-red-500 text-sm p-4"></span>
+                    </div>
+                    <div class="grid gap-2">
+                        <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
+                           asp-for="BuyerPhoneNumber">
+                            연락처
+                        </label>
+                        <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                           asp-for="BuyerPhoneNumber"
+                               value="@Model.BuyerPhoneNumber"
+                               placeholder="'-제외 숫자만 입력가능'" />
+                        <span asp-validation-for="BuyerPhoneNumber" class="text-red-500 text-sm p-4"></span>
+                    </div>
+                    <div class="grid gap-2">
+                        <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
+                           asp-for="BuyerPostCode">
+                            우편번호
+                        </label>
+                        <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                           asp-for="BuyerPostCode"
+                           value="@Model.BuyerPostCode"
+                               placeholder="우편번호를 입력해주세요." />
+                        <span asp-validation-for="BuyerPostCode" class="text-red-500 text-sm p-4"></span>
+                    </div>
+                    <div class="grid gap-2 col-span-2"> </div>
+                <div class="grid gap-2 col-span-2">
+                        <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
+                               for="city">
+                            주소지명
+                        </label>
+                        <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        asp-for="@Model.BuyerPostAddr"   
+                        value="@Model.BuyerPostAddr"
+                               placeholder="주소지명을 입력해주세요." />
+                        <span asp-validation-for="BuyerPostAddr" class="text-red-500 text-sm p-4"></span>
+                        
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+
+    <hr class="my-3 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+
+    <section class="border rounded-lg p-4">
+        <div class="grid gap-4">
+            <div class="flex items-center gap-4">
+                <h1 class="font-semibold text-lg md:text-xl lg:text-2xl">택배사 입력</h1>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+                <div class="grid gap-2">
+                    <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
+                           asp-for="@Model.Carrier"
+                    >
+                        택배사
+                    </label>
+                    <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                           asp-for="@Model.Carrier"
+                            value="@Model.Carrier"
+                           placeholder="택배사" />
+                </div>
+                <div class="grid gap-2">
+                    <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
+                           asp-for="@Model.TrackingNumber">
+                        운송장번호
+                    </label>
+                    <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                           asp-for="@Model.TrackingNumber"
+                           value="@Model.TrackingNumber"
+                           placeholder="운송장번호를 입력하세요." />
+                </div>
+            </div>
+        </div>
+    </section>
+        <hr class="my-3 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+
+        <div class="mb-5 flex justify-center">
+            <button class="th-red-btn">수정</button>
+            <button class="th-bl-btn mx-4">목록</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+@section Scripts {
+    @await Html.PartialAsync("~/Views/Shared/_Partial/_SweetAlert.cshtml")
+
+}
+
+
+
+

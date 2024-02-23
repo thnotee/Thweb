@@ -33,7 +33,7 @@ namespace Thweb.Mall.Areas.Admin.Controllers
                 , descending: false
             , includeProperties: "Category");
 
-            
+
             foreach (var item in productList)
             {
                 Expression<Func<Image, bool>> tableName = x => (x.TableName == "Product" && x.TableId == item.Id);
@@ -162,6 +162,32 @@ namespace Thweb.Mall.Areas.Admin.Controllers
             return RedirectToAction("Index");
 
         }
+
+
+        [HttpPost]
+        public IActionResult ImageUpload(List<IFormFile>? files)
+        {
+            var imagePath = "";
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+            if (files != null)
+            {
+                foreach (IFormFile file in files)
+                {
+                    string originFileName = Path.GetFileName(file.FileName);
+                    string savefileName = Guid.NewGuid().ToString() + originFileName; //중복 회피를 위해
+                    string imgPath = @"images\uploadImg-" + DateTime.Now.ToString("yyyyMM");
+                    string finalPath = Path.Combine(wwwRootPath, imgPath);
+                    if (!Directory.Exists(finalPath)) { Directory.CreateDirectory(finalPath); } //폴더생성
+                    using (var fileStream = new FileStream(Path.Combine(finalPath, savefileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    imagePath = @"\" + imgPath + @"\"+ savefileName;
+                }
+            }
+            return Json(new { location = imagePath });
+
+         }
 
     }
 }
