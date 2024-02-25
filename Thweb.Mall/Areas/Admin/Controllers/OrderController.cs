@@ -24,11 +24,20 @@ namespace Thweb.Mall.Areas.Admin.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1,string searchString ="")
         {
-            IEnumerable<OrderHeader> orderList = await _unitOfWork.OrderHeader
-                                .GetPagedListAsync<DateTime>(1, 100, null, x => x.OrderDate, false, includeProperties: "OrderDetails,OrderDetails.Product");
+            Expression<Func<OrderHeader, bool>>? filter = null;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                filter = u => (u.OrderNo.Contains(searchString));
+            }
 
+           var orderList = await _unitOfWork.OrderHeader
+                                .GetPagedListAsync<DateTime>(1, 100, filter, x => x.OrderDate, false, includeProperties: "OrderDetails,OrderDetails.Product");
+
+
+            orderList.pagerOptions.Path = "/Admin/Order/Index";
+            orderList.pagerOptions.AddQueryString = $"searchString={searchString}";
             return View(orderList);
         }
 

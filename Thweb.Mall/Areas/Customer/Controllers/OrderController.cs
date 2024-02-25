@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Serialization;
 using System.Linq.Expressions;
 using System.Security.Claims;
+using Thweb.Data.Repository;
 using Thweb.Data.Repository.IRepository;
 using Thweb.Model.Model;
 
@@ -19,6 +20,10 @@ namespace Thweb.Mall.Areas.Customer.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+        /// <summary>
+        /// 주문페이지로 이동합니다.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -35,8 +40,27 @@ namespace Thweb.Mall.Areas.Customer.Controllers
             }
             return View(cartList);
         }
+        /// <summary>
+        /// 주문완료페이지로 이동합니다.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> OrderComplete() 
+        {
+
+            return View();
+        }
 
         
+
+        ///////////
+        /// API CALL
+        ////////////
+
+        /// <summary>
+        /// 결제
+        /// </summary>
+        /// <param name="kaKaopay"></param>
+        /// <returns></returns>
         public async Task<IActionResult> AddOrder(KaKaoPay kaKaopay) {
             //OrderHeadr에 넣기
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -61,7 +85,6 @@ namespace Thweb.Mall.Areas.Customer.Controllers
             await _unitOfWork.OrderHeader.AddAsync(orderHeader);
             foreach (var cart in cartList)
             {
-                
                 OrderDetail orderDetail = new()
                 {
                     ProductId = cart.ProductId,
@@ -69,9 +92,10 @@ namespace Thweb.Mall.Areas.Customer.Controllers
                     Price = cart.Product.Price,
                     Count = cart.Count
                 };
-
                await _unitOfWork.OrderDetail.AddAsync(orderDetail);
             }
+
+            _unitOfWork.Cart.RemoveRange(cartList);
             _unitOfWork.Save();
             return Json(new { seccess = true, message = "주문 추가 성공" });
         }

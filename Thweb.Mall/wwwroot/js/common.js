@@ -2,10 +2,14 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-function m_menu_open() {
-    var menu = document.getElementById("m_menu");
-    $("#m_menu").toggleClass("-translate-x-full");
-};
+
+function checkValue(value) {
+    if (value === null || value === "" || value === undefined) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 
 function AddToCart(productId) {

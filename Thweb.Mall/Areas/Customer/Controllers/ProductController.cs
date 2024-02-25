@@ -15,17 +15,20 @@ namespace Thweb.Mall.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int categoryId = 1, int page = 1)
         {
+            Expression<Func<Product, bool>>? filter = u=>u.CategoryId == categoryId;
+
             Expression<Func<Product, DateTime>> orderByEx = x => x.RegDate;
             var productList = await _unitOfWork.Product.GetPagedListAsync<DateTime>(
                 page: page
                 , pageSize: 10
-                , filter: null
+                , filter: filter
                 , orderBy: orderByEx
                 , descending: false
             , includeProperties: "Category");
 
+            
 
             foreach (var item in productList)
             {

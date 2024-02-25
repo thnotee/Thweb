@@ -22,23 +22,32 @@ namespace Thweb.Mall.Areas.Admin.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(string searchString ="", int page = 1)
         {
+            Expression<Func<Product, bool>>? filter = null;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                filter = u => (u.Title.Contains(searchString));
+            }
+            
+
             Expression<Func<Product, DateTime>> orderByEx = x => x.RegDate;
             var productList = await _unitOfWork.Product.GetPagedListAsync<DateTime>(
                 page: page
                 , pageSize: 10
-                , filter: null
+                , filter: filter
                 , orderBy: orderByEx
                 , descending: false
             , includeProperties: "Category");
-
 
             foreach (var item in productList)
             {
                 Expression<Func<Image, bool>> tableName = x => (x.TableName == "Product" && x.TableId == item.Id);
                 item.Images = await _unitOfWork.Image.GetAllAsync(tableName);
             }
+
+            productList.pagerOptions.Path = "/Admin/Product/Index";
+            productList.pagerOptions.AddQueryString = $"searchString={searchString}";
             return View(productList);
         }
 
@@ -165,14 +174,14 @@ namespace Thweb.Mall.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public IActionResult ImageUpload(List<IFormFile>? files)
+        public IActionResult ImageUpload(IFormFile? file)
         {
+            
             var imagePath = "";
             string wwwRootPath = _webHostEnvironment.WebRootPath;
-            if (files != null)
+            if (file != null)
             {
-                foreach (IFormFile file in files)
-                {
+                
                     string originFileName = Path.GetFileName(file.FileName);
                     string savefileName = Guid.NewGuid().ToString() + originFileName; //중복 회피를 위해
                     string imgPath = @"images\uploadImg-" + DateTime.Now.ToString("yyyyMM");
@@ -183,7 +192,7 @@ namespace Thweb.Mall.Areas.Admin.Controllers
                         file.CopyTo(fileStream);
                     }
                     imagePath = @"\" + imgPath + @"\"+ savefileName;
-                }
+                
             }
             return Json(new { location = imagePath });
 

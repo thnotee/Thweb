@@ -1,4 +1,7 @@
-﻿@model IEnumerable<Cart>
+﻿
+@inject UserManager<ThwebUser> UserManager
+@model IEnumerable<Cart>
+
 @{
     var orderTotal = 0;
     var orderTitle = "";
@@ -14,7 +17,8 @@
             orderTitle = Model.FirstOrDefault().Product.Title + "외 " + (Model.Count() - 1) + "건";
         }
     }
-    
+    var claimsIdentity = (ClaimsIdentity)User.Identity;
+    var email = claimsIdentity.FindFirst(ClaimTypes.Email).Value;
 }
 
 <div class="">
@@ -63,47 +67,47 @@
             <div class="grid gap-4 md:grid-cols-2">
                 <div class="grid gap-2">
                     <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
-                           for="zip">
+                           for="username">
                         받는사람
                     </label>
                     <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                           id="zip"
+                           id="username"
                            placeholder="홍길동" />
                 </div>
                 <div class="grid gap-2">
                     <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
-                           for="zip">
+                           for="userphone">
                         연락처
                     </label>
                     <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                           id="PhoneNumber"
+                           id="userphone"
                            placeholder="'-제외 숫자만 입력가능'" />
                 </div>
                 <div class="grid gap-2">
                     <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
-                           for="street">
+                           for="postcode">
                         우편번호
                     </label>
                     <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                           id="street"
+                           id="postcode"
                            placeholder="우편번호를 입력해주세요." />
                 </div>
                 <div class="grid gap-2">
                     <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
-                           for="city">
+                           for="postname">
                         주소지명
                     </label>
                     <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                           id="city"
+                           id="postname"
                            placeholder="주소지명을 입력해주세요." />
                 </div>
                 <div class="grid gap-2 col-span-2">
                     <label class="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm"
-                           for="state">
+                           for="postdetail">
                         상세주소
                     </label>
                     <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                           id="state"
+                           id="postdetail"
                            placeholder="상세주소를 입력해주세요." />
                 </div>
            
@@ -119,11 +123,12 @@
     <div class="text-2xl m-2 font-semibold flex items-center ">
         총 주문금액<span class="text-2xl m-4 font-semibold  text-red-500">@(string.Format("{0:N0}", orderTotal))원</span>
         <!--<button type="button" class="th-bl-btn" onclick="AddOrder();">결제하기</button>-->        
-        
+        @*
         <button type="button" onclick="AddOrder();"
                 class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
             결제하기_테스트
         </button>
+        *@
         <button type="button" onclick="kakaoPay();"
             class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
             결제하기
@@ -139,12 +144,7 @@
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <script>
 
-        var useremail = "xoghks1904@naver.com";
-        var username = "이태환";
-        var userphone = "010-5670-5842";
-        var postcode = '12345';
-        var postname = '서울특별시 강남구 삼성동';
-        var postdetail = '123-456';
+   
         
         //아임포트 초기화
         //IMP.init('imp73787316') // 예: 'imp00000000a'
@@ -159,6 +159,42 @@
 
         function kakaoPay() {
 
+            
+
+            var useremail = "@email";
+            var username = $("#username").val();
+            var userphone = $("#userphone").val();
+            var postcode = $("#postcode").val();
+            var postname = $("#postname").val();
+            var postdetail = $("#postdetail").val();
+
+            if (checkValue(useremail)) {
+                Swal.fire("로그인 필수입니다.");
+                return;
+            }
+            if (checkValue(username)) {
+                Swal.fire("받는사람을 입력해주세요.");
+                return;
+            }
+            if (checkValue(userphone)) {
+                Swal.fire("연락처를 입력해주세요.");
+                return;
+            }
+
+            if (checkValue(postcode)) {
+                Swal.fire("우편번호를 입력해주세요.");
+                return;
+            }
+            if (checkValue(postname)) {
+                Swal.fire("주소지명을 입력해주세요.");
+                return;
+            }
+            if (checkValue(postdetail)) {
+                Swal.fire("상세주소를 입력해주세요.");
+                return;
+            }
+
+            
             IMP.init("imp73787316"); // 가맹점 식별코드
             IMP.request_pay({
                 pg: 'kakaopay.TC0ONETIME', // PG사 코드표에서 선택
@@ -180,6 +216,7 @@
                     alert(rsp.error_msg)
                 }
             });
+            
 
         }
 
@@ -195,7 +232,7 @@
             var milliseconds = today.getMilliseconds();
             var makeMerchantUid = `${hours}` + `${minutes}` + `${seconds}` + `${milliseconds}`;
 
-
+            @*
             var jsonData = {
                 success: true,
                 imp_uid: makeMerchantUid,
@@ -222,8 +259,9 @@
                 card_quota: 0,
                 card_number: ""
             };
-            
-            kakaoRes = jsonData;
+                kakaoRes = kakaoRes;
+                *@
+                    
             
 
             $.ajax({
@@ -233,7 +271,7 @@
                 success: function (response) {
                     console.log(response)
                     if (response.seccess) {
-                        alert("성공");
+                        location.href = "/Customer/Order/OrderComplete";
                     }
                 },
                 error: function (xhr, status, error) {
@@ -245,78 +283,10 @@
         };
 
 
-        function Remove(cartId) {
-            $.ajax({
-                type: 'POST',
-                url: "/Customer/Cart/Remove",
-                data: { cartId: cartId },
-                success: function (response) {
-                    console.log(response)
-                    if (response.seccess) {
-                        $("#remove_" + cartId).remove();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    if (response.seccess) {
-                        Swal.fire("삭제 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
-                    }
-                }
-            });
-        }
-
-        $(document).ready(function () {
-            $(".plus-button").click(function () {
-                var cartId = $(this).data('id'); // Use data-id attribute to get the cartId
-                var input = $(this).siblings("input");
-                $.ajax({
-                    type: 'POST',
-                    url: "/Customer/Cart/Plus",
-                    data: { cartId: cartId },
-                    success: function (response) {
-                        console.log(response)
-                        if (response.seccess) {
-                            input.val(response.data); // value를 증가시킴
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        if (response.seccess) {
-                            Swal.fire("수량조절 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
-                        }
-                    }
-                });
-            });
-
-
-            $(".minus-button").click(function () {
-                var cartId = $(this).data('id'); // Use data-id attribute to get the cartId
-                var input = $(this).siblings("input");
-                if (input.val() == "1") {
-                    Swal.fire("1 이상 선택해주세요.");
-                    return;
-                }
-                $.ajax({
-                    type: 'POST',
-                    url: "/Customer/Cart/Minus",
-                    data: { cartId: cartId },
-                    success: function (response) {
-                        console.log(response)
-                        if (response.seccess) {
-                            input.val(response.data);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        if (response.seccess) {
-                            Swal.fire("수량조절 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
-                        }
-                    }
-                });
-            });
-
-        });
-
-
-        $(document).on("keyup", "#PhoneNumber", function () {
+        $(document).on("keyup", "#userphone", function () {
             formatPhoneNumObj(this);
         });
+
+       
     </script>
 }

@@ -3,73 +3,127 @@
     Layout = "/Views/Shared/_Layout_admin.cshtml";
 }
 
-<form id="myform">
-    <input type="hidden" value="" id="productId" name="productId" />
-    <div class="container w-full p-10">
 
-        <table id="" class="th_table w-full border border-gray-500">
-            <thead>
+
+<form id="myform">
+<div class="mt-4">
+
+        <div class="flex w-full my-6">
+            <div class="w-1/4">
+                <span class="text-2xl font-semibold">
+                    상품관리
+                </span>
+            </div>
+            <div class="w-1/4">
+            </div>
+            <div class="w-2/4">
+                <form class="w-full" asp-area="Admin" asp-controller="Product" asp-action="Index" method="get">
+                    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+                        <input type="search" id="default-search" name="searchString"
+                               class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="상품명 입력해주세요." />
+                        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                    </div>
+                </form>
+            </div>
+
+
+
+        </div>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    <th class="">상품이미지</th>
-                    <th class="">상품코드</th>
-                    <th class="">상품명</th>
-                    <th class="">가격</th>
-                    <th class="">카테고리</th>
-                    <th class="">등록일</th>
-                    <th class="">추가 또는 수정</th>
+                    <th scope="col" class="px-6 py-3 text-center">
+                        상품이미지
+                    </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                        상품코드
+                    </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                        상품명
+                    </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                        가격
+                    </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                        카테고리
+                    </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                        등록일
+                    </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            
+                        </th>
+
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            <div class="w-[200px] h-[100px]">
-                                @if (item.Images.Any())
-                                {
-                                    var imagePath = item.Images.FirstOrDefault().DirectoryPath + item.Images.FirstOrDefault().SaveFileName;
-                                    <img src="@imagePath" alt="ProductImg" class="w-full h-full" />
-                                }
-                                else
-                                {
-                                    <img src="https://placeholder.com/200x100/png" alt="ProductImg" class="w-full h-full" />
-                                }
-                            </div>
-                        </td>
-                        <td>@item.Id</td>
-                        <td>@item.Title</td>
-                        <td>@item.Price</td>
-                        <th>@item.Category.Name</th>
-                        <td>@item.RegDate.ToString("yyyy-MM-dd")</td>
-                        <td>
-                            <div class="flex items-center justify-center">
-                                <a asp-controller="Product" asp-action="Upsert" asp-route-id="@item.Id"
-                                   class="th-dark-btn inline-block">수정</a>
-                                <button onclick="Remove('@item.Id')" class="th-red-btn">삭제</button>
-                            </div>
+                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                        <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <div class="w-[200px] h-[100px] mx-auto">
+                                    @if (item.Images.Any())
+                                    {
+                                        var imagePath = item.Images.FirstOrDefault().DirectoryPath + item.Images.FirstOrDefault().SaveFileName;
+                                        <img src="@imagePath" alt="ProductImg" class="w-full h-full" />
+                                    }
+                                    else
+                                    {
+                                        <img src="https://placeholder.com/200x100/png" alt="ProductImg" class="w-full h-full" />
+                                    }
+                                </div>
 
+                        </td>
+                            <td class="px-6 py-4 text-center">
+                            @item.Id
+                        </td>
+                            <td class="px-6 py-4 text-center">
+                                @item.Title
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                @item.Price
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                @item.Category.Name
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                            @item.RegDate.ToString("yyyy-MM-dd")
+                        </td>
+                            <td class="px-6 py-4 mx-auto">
+                                <div class="flex items-center justify-center">
+                                    <a asp-controller="Product" asp-action="Upsert" asp-route-id="@item.Id"
+                                       class="th-dark-btn inline-block">수정</a>
+                                    <button onclick="Remove('@item.Id')" class="th-red-btn">삭제</button>
+                                </div>
                         </td>
                     </tr>
 
+
                 }
+
+
             </tbody>
-
         </table>
-
-        <div class="flex justify-between mt-4">
-            <div class="flex w-full">
-                <input class="th-input w-2/4 px-4" />
-                <button class="th-bl-btn mx-2 w-1/4 ">검색</button>
-            </div>
-            <div>
-                @await Html.PartialAsync("~/Views/Shared/_Partial/_Paging.cshtml", Model.pagerOptions)
-            </div>
+        <div class="mt-3 flex justify-end">
+                <a asp-controller="Product" asp-action="Upsert" 
+                   class="th-dark-btn inline-block">상품추가</a>
         </div>
-
-        <a asp-controller="Product" asp-action="Upsert" class="th-dark-btn">상품 추가하기</a>
-        <button class="th-wh-btn my-2">나를 클릭하세요</button>
     </div>
 
+    <div class="flex justify-center m-4">
+        <div>
+            @await Html.PartialAsync("~/Views/Shared/_Partial/_Paging.cshtml", Model.pagerOptions)
+        </div>
+
+    </div>
+</div>
 </form>
 
 

@@ -4,48 +4,138 @@
 }
 
 
-<div class="container w-full p-10">
-    
-    <table id="" class="th_table w-full border border-gray-500">
-        <thead>
-            <tr>
-                <th class="">이메일</th>
-                <th class="">닉네임</th>
-                <th class="">가입일</th>
-                <th class="">정지</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td class="sorting_1" tabindex="0">@item.Email</td>
-                    <td>@item.Nickname</td>
-                    <td>@item.RegDate.ToString("yyyy-MM-dd")</td>
-                    <td>정지시키기 추가예정</td>
-                </tr>
 
-            }
-        </tbody>
+<div class="mt-4">
 
-    </table>
-
-    <div class="flex justify-between mt-4">
-
-        <div class="flex w-full">
-            <input class="th-input w-2/4 px-4" />
-            <button class="th-bl-btn mx-2 w-1/4 ">검색</button>
+    <div class="flex w-full my-6">
+        <div class="w-1/4">
+            <span class="text-2xl font-semibold">
+                회원관리
+            </span>
         </div>
+        <div class="w-1/4">
+        </div>
+        <div class="w-2/4">
+            <form class="w-full" asp-area="Admin" asp-controller="User" asp-action="Index" method="get">
+                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                    </div>
+                    <input type="search" id="default-search" name="searchString"
+                    class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="이메일, 닉네임, 가입일(yyyy-MM-dd)을 입력해주세요." />
+                    <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                </div>
+            </form>
+        </div>
+        
+
+
+    </div>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        이메일
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        닉네임
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        가입일
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            @item.Email
+                        </th>
+                        <td class="px-6 py-4">
+                            @item.Nickname
+                        </td>
+                        <td class="px-6 py-4">
+                            @item.RegDate.ToString("yyyy-MM-dd")
+                        </td>
+                        <td class="px-6 py-4">
+                            <a onclick="LockUnlock('@item.Id')" id="@item.Id"
+                               class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                @if (item.LockoutEnd != null && item.LockoutEnd > DateTime.Now)
+                                {
+
+                                    var dataTimeString = item.LockoutEnd.Value.UtcDateTime.ToString("yyyy-MM-dd");
+                                    <span>정지해제(@dataTimeString)</span>
+                                }
+                                else
+                                {
+                                    <span>정지</span>
+                                }
+                            </a>
+                        </td>
+                    </tr>
+                    
+
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex justify-center m-4">
         <div>
             @await Html.PartialAsync("~/Views/Shared/_Partial/_Paging.cshtml", Model.pagerOptions)
         </div>
 
     </div>
-
-    <button class="th-bl-btn my-9 h-5">나를 클릭하세요</button>
-    <button class="th-wh-btn my-2">나를 클릭하세요</button>
-
-
-
 </div>
+
+
+@section Scripts{
+
+
+    <script>
+        function LockUnlock(id) {
+            console.log("실행")
+            // Ajax 요청 설정
+            $.ajax({
+                type: "POST",
+                url: "/Admin/User/LockUnlock", // 실제 서버 엔드포인트 URL로 대체
+                data: JSON.stringify(id),
+                contentType: "application/json",  // Content-Type 명시
+                dataType: "json", // 서버 응답 데이터 타입 설정 (JSON 예제)
+
+                success: function (res) {
+                    console.log(res)
+                    console.log($("#" + id).html())
+                    if (res.success) {
+                        if (res.data.lockTf) {
+                            $("#" + id).html("<span>정지</span>")
+                        } 
+                        else {
+                            $("#" + id).html("<span>정지해제 (" + res.data.lockoutEnd + ")</span>")
+                        }
+                        
+                        
+                    }
+                },
+                error: function (error) {
+                    // 서버 응답 실패 시 처리
+                    console.log("Error:", error);
+                    $("#response").html("Error occurred. Check console for details.");
+                }
+            });
+        }
+    </script>
+
+}
+
 

@@ -23,6 +23,7 @@ namespace Thweb.Mall.Areas.Admin.Controllers
 
         public async Task<IActionResult> Upsert(int Id)
         {
+
             Category category = new Category();
             if (Id != 0) {
                 category = await _unitOfWork.Category.GetAsync(x => x.Id == Id);

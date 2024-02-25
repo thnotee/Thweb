@@ -38,6 +38,10 @@
     <ProjectReference Include="..\Thweb.Util\Thweb.Util.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\main\" />
+  </ItemGroup>
+
 	<Target Name="RunNpmScript" BeforeTargets="Build">
 		<Exec Command="npm run css:build" />
 	</Target>

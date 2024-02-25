@@ -29,11 +29,69 @@ namespace Thweb.Mall.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(int page = 1 , string searchString = "")
         {
+            Expression<Func<ThwebUser, bool>>? filter = null;
+            
+            if (!string.IsNullOrEmpty(searchString)) 
+            {
+                DateTime searchDate;
+                bool isDate = DateTime.TryParse(searchString, out searchDate);
+                if (isDate) //날짜검색 시
+                {
+                    filter = u => (u.RegDate.Date == searchDate.Date);
+                }
+                else 
+                {
+                    filter = u => (u.Email.Contains(searchString) || u.Nickname.Contains(searchString));
+                }
+                
+            }
             Expression<Func<ThwebUser, DateTime>> orderByEx = x => x.RegDate;
-            PagedList<ThwebUser> userList = await _unitOfWork.ThwebUser.GetPagedListAsync<DateTime>(page, 10,null,orderBy: orderByEx);
+            PagedList<ThwebUser> userList = await _unitOfWork.ThwebUser.GetPagedListAsync<DateTime>(page, 10, filter, orderBy: orderByEx,true);
             userList.pagerOptions.Path = "/Admin/User/Index";
             userList.pagerOptions.AddQueryString = $"searchString={searchString}";
             return View(userList);
+        }
+
+
+        ////////////////////
+        /// API Call
+        ///////////////////
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> LockUnlock([FromBody] string id)
+        {
+            var objFromDb = await _unitOfWork.ThwebUser.GetAsync(u => u.Id == id);
+            var lockTf = false;
+            
+            if (objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.Now)
+            {
+                objFromDb.LockoutEnd = DateTime.Now;
+            }
+            else
+            {
+                objFromDb.LockoutEnd = DateTime.Now.AddYears(1);
+                lockTf = true;
+            }
+            _unitOfWork.ThwebUser.Update(objFromDb);
+
+            string lockoutEndString = "";
+            if (objFromDb.LockoutEnd != null)
+            {
+                lockoutEndString =  objFromDb.LockoutEnd.Value.UtcDateTime.ToString("yyyy-MM-dd");
+            }
+            
+            _unitOfWork.Save();
+            var data = new {
+                id = objFromDb.Id,
+                lockoutEnd = lockoutEndString,
+                lockTf = lockTf
+            };
+            return Json(new { success = true, data= data });
         }
 
     }

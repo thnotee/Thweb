@@ -11,17 +11,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Thweb.Mall</title>
     
-  
-    <!--
-    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
-    <script src="~/node_modules/flowbite/dist/flowbite.min.js"></script>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Thweb.Mall.styles.css" asp-append-version="true" />
-    -->
-    <!--<script src="https://cdn.tailwindcss.com"></script>-->
+ 
     <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
-    
+    <style>
+        .thweb-min-height {
+            min-height: calc(100vh - 220px);
+        }
+    </style>
 </head>
 <body>
 
@@ -41,8 +38,6 @@
                     @if (SignInManager.IsSignedIn(User))
                     {
                       
-
-
                         <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
                             <span class="sr-only">Open user menu</span>
                             <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo">
@@ -101,7 +96,7 @@
                             </a>
                         </li>
                         <li>
-                            <a asp-area="customer" asp-controller="cart" asp-action="Index"
+                            <a asp-area="customer" asp-controller="shopping" asp-action="Index"
                                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
                                 주문내역
                             </a>
@@ -116,6 +111,7 @@
 
 
     </header>
+    @*
     <banner class="w-full">
         <div id="default-carousel" class="relative w-full" data-carousel="slide">
             <!-- Carousel wrapper -->
@@ -158,15 +154,15 @@
             </button>
         </div>
     </banner>
+    *@
 
-
-    <main class="main w-[1200px] mx-auto">
+    <main class="main w-[1200px] mx-auto thweb-min-height">
             @RenderBody()
     </main>
 
 
 
-    <footer class="w-[1200px] mx-auto bg-white rounded-lg shadow dark:bg-gray-900 m-4">
+    <footer class="w-[1200px] mx-auto bg-white rounded-lg shadow dark:bg-gray-900 m-4 flex justify-center">
         <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
             <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
             <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
@@ -174,7 +170,7 @@
             </span>
         </div>
     </footer>
-    
+
 
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
