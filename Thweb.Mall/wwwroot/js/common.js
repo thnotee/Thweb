@@ -18,17 +18,29 @@ function AddToCart(productId) {
         url: "/Customer/Cart/AddToCart",
         data: { productId: productId },
         success: function (response) {
-            if (response.seccess)
-            {
+            if (response.seccess) {
                 Swal.fire("장바구니 추가되었습니다.");
             }
+            else
+            {
+                Swal.fire("로그인이 필요한 서비스입니다.");
+            }
+
         },
         error: function (xhr, status, error)
         {
-            Swal.fire("에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
-            console.log(xhr);
-            console.log(status);
-            console.log(error);
+            if (xhr.status == 401) {
+                Swal.fire("로그인이 필요한 서비스입니다.");
+            }
+            else
+            {
+                Swal.fire("에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                console.log(xhr.status);
+                console.log(status);
+                console.log(error);
+            }
+
+          
         }
     });
 }

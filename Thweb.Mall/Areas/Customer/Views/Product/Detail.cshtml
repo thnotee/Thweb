@@ -1,16 +1,21 @@
 ﻿@model Product
+@{
+
+    var relatedProducts = ViewData["relatedProducts"] as IEnumerable<Product>;
+
+}
 
 <div class="flex">
-    <div class="w-1/2 p-7">
-        <div id="default-carousel" class="relative w-full" data-carousel="slide">
+    <div class="w-1/2 ">
+        <div id="default-carousel" class="relative w-full" @(Model.Images.Count() == 1 ? "" : "data-carousel=''")>
             <!-- Carousel wrapper -->
-            <div class="relative h-56 overflow-hidden rounded-lg md:h-90">
+            <div class="relative h-80 overflow-hidden rounded-lg" >
                 @if (Model.Images != null && Model.Images.Any())
                 {
                     foreach (var img in Model.Images)
                     {
                         var imagePath = img.DirectoryPath + img.SaveFileName;
-                        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                        <div class="@(Model.Images.Count() == 1 ?  "" : "hidden") duration-700 ease-in-out" data-carousel-item>
                             <img src="@imagePath"
                                  class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                  alt="...">
@@ -32,7 +37,7 @@
                         {
 
                             <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide1"
-                            data-carousel-slide-to="@index"></button>
+                            data-carousel-slide-to="@index+1"></button>
                         }
                         else
                         {
@@ -45,35 +50,44 @@
                 }
 
             </div>
-            <!-- Slider controls -->
-            <button type="button"
-                    class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                    data-carousel-prev>
-                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                    <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
-                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                              stroke-width="2" d="M5 1 1 5l4 4" />
-                    </svg>
-                    <span class="sr-only">Previous</span>
-                </span>
-            </button>
-            <button type="button"
-                    class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                    data-carousel-next>
-                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                    <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
-                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                              stroke-width="2" d="m1 9 4-4-4-4" />
-                    </svg>
-                    <span class="sr-only">Next</span>
-                </span>
-            </button>
+
+            @if (Model.Images != null && Model.Images.Count() > 1)
+            {
+                <!-- Slider controls -->
+                <button type="button"
+                        class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                        data-carousel-prev>
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                        <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" d="M5 1 1 5l4 4" />
+                        </svg>
+                        <span class="sr-only">Previous</span>
+                    </span>
+                </button>
+                <button type="button"
+                        class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                        data-carousel-next>
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                        <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" d="m1 9 4-4-4-4" />
+                        </svg>
+                        <span class="sr-only">Next</span>
+                    </span>
+                </button>
+            
+            
+            }
+
+        
+
         </div>
 
     </div>
-    <div class="w-1/2 p-4 h-56 md:h-90">
+    <div class="w-1/2 p-4 h-90">
         <span class="block text-2xl m-2">
             @Model.Title
         </span>
@@ -91,7 +105,7 @@
             </div>
 
             <div class="w-1/3 flex justify-end p-4">
-                <a href="#"
+                <a href="javascript:AddToCart('1')"
                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     장바구니 추가
                 </a>
@@ -110,83 +124,64 @@
 <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
 <section class="flex justify-center">
 
-    <div class="w-1/3 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="#">
-            <img class="p-8 rounded-t-lg"
-                 src="~/images/tempImg/snacks/Draw-a-bulk-Korean-chocolate-confection-0.jpg"
-                 alt="product image" />
-        </a>
-        <div class="px-5 pb-5">
-            <a href="#">
-                <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                    Apple Watch
-                    Series 7 GPS, Aluminium Case, Starlight Sport
-                </h5>
-            </a>
-            <div class="flex items-center mt-2.5 mb-5">
-            </div>
-            <div class="flex items-center justify-between">
-                <span class="text-3xl font-bold text-gray-900 dark:text-white">5,000원</span>
-                <a href="#"
-                   class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    장바구니 추가
+
+    @if (relatedProducts.Any())
+    {
+        foreach (var relatedProduct in relatedProducts)
+        {
+            <div class="w-1/3 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+
+                
+                <a href="#">
+
+
+                    @if (relatedProduct.Images != null && relatedProduct.Images.Any())
+                    {
+                        var firstImage = relatedProduct.Images.FirstOrDefault();
+                        var imagePath = firstImage.DirectoryPath + firstImage.SaveFileName;
+
+                        <img class="p-8 rounded-t-lg"
+                             src="@imagePath"
+                             style="max-height: 245px"
+                             alt="product image" />
+                    }
+                  
                 </a>
+                <div class="px-5 pb-5">
+                    <a href="#">
+                        <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                            @relatedProduct.Title
+                        </h5>
+                    </a>
+                    <div class="flex items-center mt-2.5 mb-5">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-3xl font-bold text-gray-900 dark:text-white"> @string.Format("{0:N0}", relatedProduct.Price)원</span>
+                        <a href="javascript:AddToCart('1')"
+                           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            장바구니 추가
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-
-
-    <div class="w-1/3 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="#">
-            <img class="p-8 rounded-t-lg"
-                 src="~/images/tempImg/snacks/Draw-a-bulk-Korean-chocolate-confection-0.jpg"
-                 alt="product image" />
-        </a>
-        <div class="px-5 pb-5">
-            <a href="#">
-                <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                    Apple Watch
-                    Series 7 GPS, Aluminium Case, Starlight Sport
-                </h5>
-            </a>
-            <div class="flex items-center mt-2.5 mb-5">
-            </div>
-            <div class="flex items-center justify-between">
-                <span class="text-3xl font-bold text-gray-900 dark:text-white">8,000원</span>
-                <a href="#"
-                   class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    장바구니 추가
-                </a>
-            </div>
-        </div>
-    </div>
-
-
-
-    <div class="w-1/3 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="#">
-            <img class="p-8 rounded-t-lg"
-                 src="~/images/tempImg/snacks/Draw-a-bulk-Korean-chocolate-confection-0.jpg"
-                 alt="product image" />
-        </a>
-        <div class="px-5 pb-5">
-            <a href="#">
-                <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                    Apple Watch
-                    Series 7 GPS, Aluminium Case, Starlight Sport
-                </h5>
-            </a>
-            <div class="flex items-center mt-2.5 mb-5">
-            </div>
-            <div class="flex items-center justify-between">
-                <span class="text-3xl font-bold text-gray-900 dark:text-white">3,000원</span>
-                <a href="#"
-                   class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    장바구니 추가
-                </a>
-            </div>
-        </div>
-    </div>
-
+        }
+       
+    }
 
 </section>
+
+
+@section Scripts {
+    <script>
+  
+        $(function () {
+            $('.order_title').click(function () {
+                var accordionTxt = $(this).next('.order_detail');
+                accordionTxt.slideToggle();
+            });
+
+     
+        });
+
+    </script>
+}

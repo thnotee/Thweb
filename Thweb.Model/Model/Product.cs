@@ -7,7 +7,7 @@ namespace Thweb.Model.Model
     public class Product
     {
         [Key]
-        public int Id { get; set; }
+        public int Id { get; set; } = 0;
         /// <summary>
         /// 제목
         /// </summary>

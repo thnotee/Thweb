@@ -98,6 +98,24 @@ bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:b
 
     <script>
 
+        function Remove(cartId) {
+            $.ajax({
+                type: 'POST',
+                url: "/Customer/Cart/Remove",
+                data: { cartId: cartId },
+                success: function (response) {
+                    
+                    if (response.seccess) {
+                        location.reload();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (response.seccess) {
+                        Swal.fire("삭제 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                    }
+                }
+            });
+        }
         $(document).ready(function () {
             $(".plus-button").click(function () {
                 var cartId = $(this).data('id'); // Use data-id attribute to get the cartId
@@ -107,7 +125,7 @@ bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:b
                     url: "/Customer/Cart/Plus",
                     data: { cartId: cartId },
                     success: function (response) {
-                        console.log(response)
+                        
                         if (response.seccess) {
                             input.val(response.data.cartCount); // value를 증가시킴
                             var orderTotal = formatNumberWithoutDecimal(response.data.orderTotal);
@@ -135,7 +153,7 @@ bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:b
                     url: "/Customer/Cart/Minus",
                     data: { cartId: cartId },
                     success: function (response) {
-                        console.log(response)
+                        
                         if (response.seccess) {
                             input.val(response.data.cartCount);
                             var orderTotal = formatNumberWithoutDecimal(response.data.orderTotal);
@@ -152,24 +170,7 @@ bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:b
 
 
 
-            function Remove(cartId) {
-                $.ajax({
-                    type: 'POST',
-                    url: "/Customer/Cart/Remove",
-                    data: { cartId: cartId },
-                    success: function (response) {
-                        console.log(response)
-                        if (response.seccess) {
-                            $("#remove_" + cartId).remove();
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        if (response.seccess) {
-                            Swal.fire("삭제 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
-                        }
-                    }
-                });
-            }
+            
         });
 
 

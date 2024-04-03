@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq.Expressions;
-using Thweb.Data.Repository;
 using Thweb.Data.Repository.IRepository;
 using Thweb.Model.Model;
 using Thweb.Model.ViewModel;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using System.IO;
 
 namespace Thweb.Mall.Areas.Admin.Controllers
 {
@@ -42,7 +42,7 @@ namespace Thweb.Mall.Areas.Admin.Controllers
 
             foreach (var item in productList)
             {
-                Expression<Func<Image, bool>> tableName = x => (x.TableName == "Product" && x.TableId == item.Id);
+                Expression<Func<Thweb.Model.Model.Image, bool>> tableName = x => (x.TableName == "Product" && x.TableId == item.Id);
                 item.Images = await _unitOfWork.Image.GetAllAsync(tableName);
             }
 
@@ -51,9 +51,9 @@ namespace Thweb.Mall.Areas.Admin.Controllers
             return View(productList);
         }
 
-        public async Task<IActionResult> Upsert(int id)
+        public async Task<IActionResult> Upsert(int id = 0)
         {
-            ProductVm productVm = new ProductVm
+            var productVm = new ProductVm
             {
                 CategoryList = (await _unitOfWork.Category.GetAllAsync()).Select(u => new SelectListItem
                 {
@@ -65,8 +65,10 @@ namespace Thweb.Mall.Areas.Admin.Controllers
 
             if (id != 0)
             {
+             
+
                 productVm.Product = await _unitOfWork.Product.GetAsync(x => x.Id == id);
-                Expression<Func<Image, bool>> tableName = x => (x.TableName == "Product" && x.TableId == id);
+                Expression<Func<Thweb.Model.Model.Image, bool>> tableName = x => (x.TableName == "Product" && x.TableId == id);
                 productVm.Product.Images = await _unitOfWork.Image.GetAllAsync(tableName);
             }
 
@@ -106,16 +108,28 @@ namespace Thweb.Mall.Areas.Admin.Controllers
                         string imgPath = @"images\product-" + product.Id;
                         string finalPath = Path.Combine(wwwRootPath, imgPath);
                         if (!Directory.Exists(finalPath)) { Directory.CreateDirectory(finalPath); } //폴더생성
-                        using (var fileStream = new FileStream(Path.Combine(finalPath, savefileName), FileMode.Create))
+
+                        string fullPath = Path.Combine(finalPath, savefileName);
+                        using (var stream = file.OpenReadStream())
+                        using (SixLabors.ImageSharp.Image sharpImage = SixLabors.ImageSharp.Image.Load(stream))
                         {
-                            file.CopyTo(fileStream);
+                            // 이미지 크기 조정
+                            sharpImage.Mutate(x => x.Resize(new ResizeOptions
+                            {
+                                Mode = ResizeMode.Max,
+                                Size = new Size(1200, 950)
+                            }));
+                            // 수정된 이미지 저장
+                            sharpImage.Save(fullPath);
                         }
-                        Image image = new Image();
+
+                        Thweb.Model.Model.Image image = new Thweb.Model.Model.Image();
                         image.DirectoryPath = @"\" + imgPath + @"\";
                         image.OriginFileName = originFileName;
                         image.SaveFileName = savefileName;
                         image.TableName = "Product";
-                        image.TableId = product.Id; // SQL SERVER ID값 먼저 가져오는방법
+                        image.TableId = product.Id; 
+                        
                         await _unitOfWork.Image.AddAsync(image);
                     }
                     _unitOfWork.Save();
@@ -136,7 +150,7 @@ namespace Thweb.Mall.Areas.Admin.Controllers
             var data = await _unitOfWork.Product.GetAsync(x => x.Id == productId);
             if (data != null)
             {
-                Expression<Func<Image, bool>> tableName = x => (x.TableName == "Product" && x.TableId == data.Id);
+                Expression<Func<Thweb.Model.Model.Image, bool>> tableName = x => (x.TableName == "Product" && x.TableId == data.Id);
                 var ImageList = await _unitOfWork.Image.GetAllAsync(tableName);
                 _unitOfWork.Image.RemoveRange(ImageList);
 
@@ -172,6 +186,20 @@ namespace Thweb.Mall.Areas.Admin.Controllers
 
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveImage(int imageId)
+        {
+
+            var data = await _unitOfWork.Image.GetAsync(x => x.Id == imageId);
+            if (data != null)
+            {
+                _unitOfWork.Image.Remove(data);
+                _unitOfWork.Save();
+            }
+            return Json(new { seccess = true, message = "이미지 삭제 성공" }); ;
+
+        }
 
         [HttpPost]
         public IActionResult ImageUpload(IFormFile? file)

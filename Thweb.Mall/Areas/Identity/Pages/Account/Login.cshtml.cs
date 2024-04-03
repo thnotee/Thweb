@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Thweb.Model.Model;
+using Thweb.Data.Migrations;
 
 namespace Thweb.Mall.Areas.Identity.Pages.Account
 {
@@ -46,6 +47,7 @@ namespace Thweb.Mall.Areas.Identity.Pages.Account
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
+        [BindProperty]
         public string ReturnUrl { get; set; }
 
         /// <summary>
@@ -83,6 +85,8 @@ namespace Thweb.Mall.Areas.Identity.Pages.Account
             /// </summary>
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
+
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -102,9 +106,10 @@ namespace Thweb.Mall.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync()
         {
-            returnUrl ??= Url.Content("~/");
+
+            ReturnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -116,11 +121,11 @@ namespace Thweb.Mall.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    return LocalRedirect(ReturnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = ReturnUrl, RememberMe = Input.RememberMe });
                 }
                 if (result.IsLockedOut)
                 {

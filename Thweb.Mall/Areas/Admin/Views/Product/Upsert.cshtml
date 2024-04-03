@@ -1,11 +1,14 @@
 ﻿@model ProductVm;
 @{
     Layout = "/Views/Shared/_Layout_admin.cshtml";
+
+
+    
 }
 <div class="container w-full p-10">
     <form method="post" asp-action="Upsert" enctype="multipart/form-data" id="myFrom">
 
-        @if (Model.Product.Id == 0)
+        @if (Model == null)
         {
             <p class="text-center text-2xl">카테고리 추가</p>
         }
@@ -48,20 +51,46 @@
         </div>
 
         
-        @if (Model.Product.Images != null  && Model.Product.Images.Any())
+        @if (Model.Product != null)
         {
-            
-            <div class="my-4 flex">
 
-                @foreach (var img in Model.Product.Images)
+            <div class="my-4 flex w-full">
+
+                @if (Model.Product.Images != null)
                 {
-                    var imagePath = img.DirectoryPath + img.SaveFileName;
-                    <div>
-                        <img src="@imagePath" alt="ProductImg" class="w-1/3" />
-                    </div>
+                    foreach (var img in Model.Product.Images)
+                    {
+                        var imagePath = img.DirectoryPath + img.SaveFileName;
+                        <div class="p-3 w-1/3 flex items-center justify-center">
+                            <img src="@imagePath" alt="ProductImg" />
+                        </div>
+
+                    }
+                
                 }
+             
             </div>
-     
+
+            <div class="flex w-full">
+
+
+                @if (Model.Product.Images != null)
+                {
+                    foreach (var img in Model.Product.Images)
+                    {
+                        <div class="p-3 w-1/3 text-center">
+
+                            <button type="button"
+                                    onclick="Remove(@img.Id)"
+                                    class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">
+                                이미지 삭제
+                            </button>
+                        </div>
+                    }
+
+                }
+            
+            </div>
         }
 
         <div class="my-4">
@@ -85,7 +114,7 @@ dark:focus:border-blue-500">
             <span asp-validation-for="Product.CategoryId" class="text-red-500 text-sm p-4"></span>
         </div>
 
-        @if (Model.Product.Id == 0)
+        @if (Model.Product == null)
         {
             <button class="th-bl-btn">추가</button>
         }
@@ -115,27 +144,70 @@ dark:focus:border-blue-500">
         $("#myFrom").submit(function (e) {
 
             if (checkValue($("#Product_Title").val())) {
-                e.preventDefault(); // form의 제출을 막습니다.
-                alert('상품명을 입력해주세요.'); // 사용자에게 알림을 보냅니다.
+                e.preventDefault(); 
+                alert('상품명을 입력해주세요.'); 
                 return;
             }
 
 
             if (checkValue($("#Product_Title").val())) {
-                e.preventDefault(); // form의 제출을 막습니다.
-                alert('상품설명을 입력해주세요.'); // 사용자에게 알림을 보냅니다.
+                e.preventDefault();
+                alert('상품설명을 입력해주세요.'); 
+                return;
+            }
+
+
+            if ($("#Product_Price").val() == 0) {
+                e.preventDefault();
+                alert('상품 가격을 입력해주세요.');
                 return;
             }
 
             if (checkValue($("#Product_CategoryId").val())) {
-            e.preventDefault(); // form의 제출을 막습니다.
-            alert('카테고리를 선택해주세요.'); // 사용자에게 알림을 보냅니다.
+                e.preventDefault();
+                alert('카테고리를 선택해주세요.'); 
                 return;
             }
+    
         });
 
+        function Remove(imageId) {
+            $.ajax({
+                type: 'POST',
+                url: "/Admin/Product/RemoveImage",
+                data: { imageId: imageId },
+                success: function (response) {
+                    console.log(response)
+                    if (response.seccess) {
+                        location.reload();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (response.seccess) {
+                        Swal.fire("삭제 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                    }
+                }
+            });
+        }
 
-
+        $('#files').on('change', function (event) {
+            const files = event.target.files;
+            //이미지만 가능
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const fileType = file.type.toLowerCase();
+                if (fileType.indexOf('image') === -1) {
+                    alert('이미지 파일만 올릴 수 있습니다.');
+                    $('#files').val(''); 
+                    return;
+                }
+            }
+            //최대 3개 제한
+            if (files.length > 3) {
+                alert('최대 파일 선택 수는 3개입니다.');
+                $('#files').val(''); // Clear selected files
+            }
+        });
     </script>
 
 }

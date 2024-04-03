@@ -7,7 +7,7 @@ namespace Thweb.Mall.Areas.Admin.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index","User");
         }
 
     }
